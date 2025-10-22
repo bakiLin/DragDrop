@@ -1,2 +1,2 @@
-# Drag-Drop
+# DragDrop
 Тестовое задание
