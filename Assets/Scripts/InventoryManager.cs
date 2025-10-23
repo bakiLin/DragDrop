@@ -1,17 +1,20 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField]
     private int _maxStack;
 
+    [SerializeField]
+    private float _doubleClickTime;
+
     public InventorySlot[] InventorySlots;
 
     public GameObject _inventoryItemPrefab;
 
     private int _selectedSlot = -1;
+
+    private float _lastClickTime;
 
     private void Start()
     {
@@ -22,8 +25,16 @@ public class InventoryManager : MonoBehaviour
     public void SelectSlot(int value)
     {
         if (_selectedSlot >= 0) InventorySlots[_selectedSlot].Deselect();
-        //InventorySlots[value].Select();
+        if (_selectedSlot == value && Time.time - _lastClickTime < _doubleClickTime)
+            DoubleClick();
+
         _selectedSlot = value;
+        _lastClickTime = Time.time;
+    }
+
+    private void DoubleClick()
+    {
+        print("double click");
     }
 
     public void AddItem(ItemSO item)

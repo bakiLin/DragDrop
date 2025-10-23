@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxStack: 5
+  _doubleClickTime: 0.2
   InventorySlots:
   - {fileID: 7770484299057967330}
   - {fileID: 1363881057}
