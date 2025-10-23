@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField]
-    private int _count = 1;
+    public int Count = 1;
 
     [SerializeField]
     private TextMeshProUGUI _countText;
@@ -38,7 +37,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void RefreshCount()
     {
-        _countText.text = _count.ToString();
+        _countText.text = Count.ToString();
+        _countText.gameObject.SetActive(Count > 1);
     }
 
     public void OnBeginDrag(PointerEventData eventData)

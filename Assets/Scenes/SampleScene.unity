@@ -300,6 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13cce2b8bd3a0af44830a9b600f3b8cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxStack: 5
   InventorySlots:
   - {fileID: 7770484299057967330}
   - {fileID: 1363881057}
