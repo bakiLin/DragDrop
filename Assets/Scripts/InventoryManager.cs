@@ -1,16 +1,20 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
+    [SerializeField]
+    private DropManager _dropManager;
+
     [SerializeField]
     private int _maxStack;
 
     [SerializeField]
     private float _doubleClickTime;
 
-    public InventorySlot[] InventorySlots;
-
     public GameObject _inventoryItemPrefab;
+
+    public InventorySlot[] InventorySlots;
 
     private int _selectedSlot = -1;
 
@@ -20,6 +24,29 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < InventorySlots.Length; i++)
             InventorySlots[i].GetComponent<InventorySlot>().Initialize(i, this);
+    }
+
+    public void ConfirmDrop()
+    {
+        InventoryItem slotItem = InventorySlots[_selectedSlot].GetComponentInChildren<InventoryItem>();
+
+        slotItem.Count -= _dropManager.GetSliderValue();
+        if (slotItem.Count == 0) Destroy(slotItem.gameObject);
+        else slotItem.RefreshCount();
+    }
+
+    public void Drop()
+    {
+        if (_selectedSlot >= 0)
+        {
+            InventoryItem slotItem = InventorySlots[_selectedSlot].GetComponentInChildren<InventoryItem>();
+
+            if (slotItem != null)
+            {
+                if (slotItem.Count == 1) Destroy(slotItem.gameObject);
+                else _dropManager.InitializeSlider(slotItem.Count);
+            }
+        }
     }
 
     public void SelectSlot(int value)
