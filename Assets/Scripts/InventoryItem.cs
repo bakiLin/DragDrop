@@ -1,11 +1,24 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    private Image _image;
+    [SerializeField]
+    private int _count = 1;
 
+    [SerializeField]
+    private TextMeshProUGUI _countText;
+
+    private Image _image;
+    
+    // Item
+    private ItemSO _itemSO;
+
+    public ItemSO ItemSO { get => _itemSO; set => _itemSO = value; }
+
+    // Parent
     private Transform _parent;
 
     public Transform Parent { get => _parent; set => _parent = value; }
@@ -14,6 +27,18 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         _image = GetComponent<Image>();
         _parent = transform.parent;
+    }
+
+    public void Initialize(ItemSO item)
+    {
+        _itemSO = item;
+        _image.sprite = _itemSO.Sprite;
+        RefreshCount();
+    }
+
+    public void RefreshCount()
+    {
+        _countText.text = _count.ToString();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
