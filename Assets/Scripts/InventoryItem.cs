@@ -28,7 +28,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         _parent = transform.parent;
     }
 
-    public void Initialize(ItemSO item)
+    public void AddItem(ItemSO item)
     {
         _itemSO = item;
         _image.sprite = _itemSO.Sprite;

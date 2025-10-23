@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -8,6 +10,21 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] InventorySlots;
 
     public GameObject _inventoryItemPrefab;
+
+    private int _selectedSlot = -1;
+
+    private void Start()
+    {
+        for (int i = 0; i < InventorySlots.Length; i++)
+            InventorySlots[i].GetComponent<InventorySlot>().Initialize(i, this);
+    }
+
+    public void SelectSlot(int value)
+    {
+        if (_selectedSlot >= 0) InventorySlots[_selectedSlot].Deselect();
+        //InventorySlots[value].Select();
+        _selectedSlot = value;
+    }
 
     public void AddItem(ItemSO item)
     {
@@ -41,6 +58,6 @@ public class InventoryManager : MonoBehaviour
     {
         GameObject newItem = Instantiate(_inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItem.GetComponent<InventoryItem>();
-        inventoryItem.Initialize(item);
+        inventoryItem.AddItem(item);
     }
 }
