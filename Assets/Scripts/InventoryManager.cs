@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -22,10 +23,19 @@ public class InventoryManager : MonoBehaviour
 
     private float _lastClickTime;
 
+    public static InventoryManager Instance;
+
+    //private InventorySlot _selectedInventorySlot;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         for (int i = 0; i < InventorySlots.Length; i++)
-            InventorySlots[i].GetComponent<InventorySlot>().Initialize(i, this);
+            InventorySlots[i].GetComponent<InventorySlot>().Id = i;
     }
 
     public void Sort()
@@ -55,8 +65,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (items[i] != null)
             {
-                items[i].GetComponent<InventoryItem>().Parent = InventorySlots[i].transform;
-                items[i].SetParent(InventorySlots[i].transform);
+                items[i].GetComponent<InventoryItem>().SetParent(InventorySlots[i].transform);
                 items[i].localPosition = Vector3.zero;
             }
         }
@@ -68,7 +77,7 @@ public class InventoryManager : MonoBehaviour
 
         slotItem.Count -= _dropManager.GetSliderValue();
         if (slotItem.Count == 0) Destroy(slotItem.gameObject);
-        else slotItem.RefreshCount();
+        //else slotItem.RefreshCount();
     }
 
     public void Drop()
@@ -85,14 +94,17 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void SelectSlot(int value)
+    public void SelectSlot(int id/*int value*/)
     {
+
         if (_selectedSlot >= 0) InventorySlots[_selectedSlot].Deselect();
-        if (_selectedSlot == value && Time.time - _lastClickTime < _doubleClickTime)
+        if (id == _selectedSlot && Time.time - _lastClickTime < _doubleClickTime)
             DoubleClick();
 
-        _selectedSlot = value;
+        _selectedSlot = id;
+        //_selectedInventorySlot = 
         _lastClickTime = Time.time;
+        InventorySlots[_selectedSlot].Select();
     }
 
     private void DoubleClick()
@@ -110,7 +122,7 @@ public class InventoryManager : MonoBehaviour
             if (slotItem != null && item.Stackable && slotItem.ItemSO == item && slotItem.Count < _maxStack)
             {
                 slotItem.Count++;
-                slotItem.RefreshCount();
+                //slotItem.RefreshCount();
                 return;
             }
         }

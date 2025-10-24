@@ -1,51 +1,39 @@
-using TMPro;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public int Count = 1;
+    private int _count = 1;
 
-    [SerializeField]
-    private TextMeshProUGUI _countText;
-
-    private Image _image;
-    
-    // Item
     private ItemSO _itemSO;
 
-    public ItemSO ItemSO { get => _itemSO; set => _itemSO = value; }
-
-    // Parent
     private Transform _parent;
 
-    public Transform Parent { get => _parent; set => _parent = value; }
+    public int Count { 
+        get => _count;
+        set {
+            _count = value;
+            RefreshCount();
+        }
+    }
+    
+    public ItemSO ItemSO { get => _itemSO; set => _itemSO = value; }
+
+    public event Action<int> OnRefreshCount;
+
+    public event Action<bool> OnSetRaycastTarget;
+
+    public event Action<Sprite> OnSetSprite;
 
     private void Awake()
     {
-        _image = GetComponent<Image>();
         _parent = transform.parent;
-    }
-
-    public void AddItem(ItemSO item)
-    {
-        _itemSO = item;
-        _image.sprite = _itemSO.Sprite;
-        RefreshCount();
-    }
-
-    public void RefreshCount()
-    {
-        _countText.text = Count.ToString();
-        _countText.gameObject.SetActive(Count > 1);
-
-        if (Count <= 0) Destroy(gameObject);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _image.raycastTarget = false;
+        OnSetRaycastTarget?.Invoke(false);
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
     }
@@ -57,8 +45,27 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        _image.raycastTarget = true;
+        OnSetRaycastTarget?.Invoke(true);
         transform.SetParent(_parent);
         transform.localPosition = Vector2.zero;
+    }
+
+    public void SetParent(Transform parent)
+    {
+        _parent = parent;
+        transform.SetParent(_parent);
+    }
+
+    public void AddItem(ItemSO item)
+    {
+        _itemSO = item;
+        OnSetSprite?.Invoke(_itemSO.Sprite);
+        RefreshCount();
+    }
+
+    private void RefreshCount()
+    {
+        OnRefreshCount?.Invoke(_count);
+        if (_count <= 0) Destroy(gameObject);
     }
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5091230598377375454}
   - component: {fileID: 8326218164403593022}
   - component: {fileID: 2538063911840120664}
+  - component: {fileID: 3007616242118744194}
   m_Layer: 5
   m_Name: Inventory Cell
   m_TagString: Untagged
@@ -86,5 +87,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a95e2160935aec8478f51349a25deb06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3007616242118744194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8483017343394936796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7311495baffb7654fb0416f34014a91e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
