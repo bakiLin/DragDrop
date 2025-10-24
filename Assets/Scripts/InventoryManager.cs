@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -16,6 +15,9 @@ public class InventoryManager : MonoBehaviour
 
     public InventorySlot[] InventorySlots;
 
+    [SerializeField]
+    private ItemType[] _sortOrder;
+
     private int _selectedSlot = -1;
 
     private float _lastClickTime;
@@ -24,6 +26,40 @@ public class InventoryManager : MonoBehaviour
     {
         for (int i = 0; i < InventorySlots.Length; i++)
             InventorySlots[i].GetComponent<InventorySlot>().Initialize(i, this);
+    }
+
+    public void Sort()
+    {
+        Transform[] items = new Transform[InventorySlots.Length];
+        int orderCounter = 0;
+        int itemCounter = 0;
+
+        while (orderCounter < _sortOrder.Length)
+        {
+            for (int i = 0; i < InventorySlots.Length; i++)
+            {
+                Transform child = null;
+                if (InventorySlots[i].transform.childCount == 1)
+                    child = InventorySlots[i].transform.GetChild(0);
+
+                if (child != null && child.GetComponent<InventoryItem>().ItemSO.ItemType == _sortOrder[orderCounter])
+                {
+                    items[itemCounter] = child;
+                    itemCounter++;
+                }
+            }
+            orderCounter++;
+        }
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] != null)
+            {
+                items[i].GetComponent<InventoryItem>().Parent = InventorySlots[i].transform;
+                items[i].SetParent(InventorySlots[i].transform);
+                items[i].localPosition = Vector3.zero;
+            }
+        }
     }
 
     public void ConfirmDrop()

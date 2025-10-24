@@ -41,10 +41,25 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        InventoryItem inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
+
         if (transform.childCount == 0)
         {
-            InventoryItem inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
-            if (inventoryItem != null) inventoryItem.Parent = transform;
+            if (inventoryItem != null) 
+                inventoryItem.Parent = transform;
+        }
+        else
+        {
+            var slotItem = transform.GetChild(0).GetComponent<InventoryItem>();
+            if (inventoryItem.ItemSO.ItemType == slotItem.ItemSO.ItemType)
+            {
+                slotItem.Count += inventoryItem.Count;
+                inventoryItem.Count = slotItem.Count - 5;
+                if (slotItem.Count > 5) slotItem.Count = 5;
+
+                slotItem.RefreshCount();
+                inventoryItem.RefreshCount();
+            }
         }
     }
 
