@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[System.Serializable]
 public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler
 {
     private InventoryManager _inventoryManager;
@@ -24,13 +25,15 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         _inventoryManager.SelectSlot(_id);
+        Select();
     }
 
     public void OnDrop(PointerEventData eventData)
     {
         InventoryItem droppedItem = eventData.pointerDrag.GetComponent<InventoryItem>();
-        if (transform.childCount == 0) droppedItem.SetParent(transform);
-        else CombineStackableItem(droppedItem, transform.GetChild(0).GetComponent<InventoryItem>());
+        if (transform.childCount == 1) droppedItem.SetParent(transform);
+        else if (droppedItem.ItemSO.Stackable) 
+            CombineStackableItem(droppedItem, transform.GetChild(1).GetComponent<InventoryItem>());
     }
 
     private void CombineStackableItem(InventoryItem droppedItem, InventoryItem slotItem)

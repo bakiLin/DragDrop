@@ -54,6 +54,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         _parent = parent;
         transform.SetParent(_parent);
+        transform.SetAsFirstSibling();
     }
 
     public void AddItem(ItemSO item)

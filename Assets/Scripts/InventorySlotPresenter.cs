@@ -1,16 +1,15 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class InventorySlotPresenter : MonoBehaviour
 {
     private InventorySlot _inventorySlot;
 
-    private Image _image;
+    private GameObject _pointer;
 
     private void Awake()
     {
         _inventorySlot = GetComponent<InventorySlot>();
-        _image = GetComponent<Image>();
+        _pointer = transform.Find("Image").gameObject;
     }
 
     private void OnEnable()
@@ -25,13 +24,7 @@ public class InventorySlotPresenter : MonoBehaviour
         _inventorySlot.OnDeselect -= Deselect;
     }
 
-    private void Select()
-    {
-        _image.color = Color.blue;
-    }
+    private void Select() => _pointer.SetActive(true);
 
-    private void Deselect()
-    {
-        _image.color = Color.black;
-    }
+    private void Deselect() => _pointer.SetActive(false);
 }
