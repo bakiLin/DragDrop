@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b3f7a18e3e4a9b4fafb32b9ab047f8a, type: 3}
-  m_Name: Potion
+  m_Name: Mana
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  Description: Potion
+  Sprite: {fileID: -1949334080, guid: 748d1cd95bd2af547a5cfd56e657f73c, type: 3}
+  Description: Mana Potion
   ItemType: 1
   Stackable: 1

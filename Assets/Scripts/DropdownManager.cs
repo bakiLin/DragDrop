@@ -1,32 +1,47 @@
-using System.Collections.Generic;
-using System.Text;
-using TMPro;
 using UnityEngine;
 
 public class DropdownManager : MonoBehaviour
 {
     [SerializeField]
-    private AdvancedDropdown _dropdown;
+    private AdvancedDropdown _itemTypeDropdown, _itemDropdown;
+
+    [SerializeField]
+    private ItemTypeGroup[] _itemType;
+
+    private EnumToString _formatter;
+
+    private void Awake()
+    {
+        _formatter = new EnumToString();
+    }
 
     private void Start()
     {
-        _dropdown.DeleteAllOptions();
-
-        string[] names = System.Enum.GetNames(typeof(ItemType));
-        foreach (string name in names)
-            _dropdown.AddOptions(ToFormattedText(name));
+        _itemTypeDropdown.DeleteAllOptions();
+        for (int i = 0; i < _itemType.Length; i++)
+            _itemTypeDropdown.AddOptions(_formatter.Format(_itemType[i].ItemType.ToString()));
+        _itemTypeDropdown.onChangedValue += RefreshItemDropdown;
     }
 
-    private string ToFormattedText(string value)
+    private void RefreshItemDropdown(int value)
     {
-        var bld = new StringBuilder();
-        bld.Append(value[0]);
-        for (int i = 1; i < value.Length; i++)
-        {
-            if (char.IsUpper(value[i]))
-                bld.Append(" ");
-            bld.Append(value[i]);
-        }
-        return bld.ToString();
+        _itemDropdown.DeleteAllOptions();
+        for (int i = 0; i < _itemType[value].Items.Length; i++)
+            _itemDropdown.AddOptions(_itemType[value].Items[i].name);
+        _itemDropdown.SelectOption(0);
     }
+
+    public ItemSO GetSelectedItem()
+    {
+        if (_itemDropdown.optionsList.Count > 0)
+            return _itemType[_itemTypeDropdown.value].Items[_itemDropdown.value];
+        else return null;
+    }
+}
+
+[System.Serializable]
+public class ItemTypeGroup
+{
+    public ItemType ItemType;
+    public ItemSO[] Items;
 }

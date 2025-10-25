@@ -33,12 +33,12 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler
         InventoryItem droppedItem = eventData.pointerDrag.GetComponent<InventoryItem>();
         if (transform.childCount == 1) droppedItem.SetParent(transform);
         else if (droppedItem.ItemSO.Stackable) 
-            CombineStackableItem(droppedItem, transform.GetChild(1).GetComponent<InventoryItem>());
+            CombineStackableItem(droppedItem, transform.GetComponentInChildren<InventoryItem>());
     }
 
     private void CombineStackableItem(InventoryItem droppedItem, InventoryItem slotItem)
     {
-        if (droppedItem.ItemSO.ItemType == slotItem.ItemSO.ItemType)
+        if (droppedItem.ItemSO.name == slotItem.ItemSO.name)
         {
             slotItem.Count += droppedItem.Count;
             droppedItem.Count = slotItem.Count - 5;

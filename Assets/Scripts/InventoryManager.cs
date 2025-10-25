@@ -10,6 +10,8 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] private GameObject _inventoryItemPrefab;
 
+    [SerializeField] private DropdownManager _dropdownManager;
+
     [SerializeField] private ItemType[] _sortOrder;
 
     [SerializeField] private InventorySlot[] InventorySlots;
@@ -32,27 +34,32 @@ public class InventoryManager : MonoBehaviour
             InventorySlots[i].Id = i;
     }
 
-    public void AddItem(ItemSO itemSO)
+    public void AddItem()
     {
-        for (int i = 0; i < InventorySlots.Length; i++)
-        {
-            var slotItem = InventorySlots[i].GetComponentInChildren<InventoryItem>();
-            if (slotItem != null && itemSO.Stackable && slotItem.ItemSO == itemSO && slotItem.Count < _maxStack)
-            {
-                slotItem.Count++;
-                return;
-            }
-        }
+        var item = _dropdownManager.GetSelectedItem();
 
-        for (int i = 0; i < InventorySlots.Length; i++)
+        if (item != null)
         {
-            var slot = InventorySlots[i];
-            if (!slot.GetComponentInChildren<InventoryItem>())
+            for (int i = 0; i < InventorySlots.Length; i++)
             {
-                var item = Instantiate(_inventoryItemPrefab, slot.transform).GetComponent<InventoryItem>();
-                item.transform.SetAsFirstSibling();
-                item.AddItem(itemSO);
-                return;
+                var slotItem = InventorySlots[i].GetComponentInChildren<InventoryItem>();
+                if (slotItem != null && item.Stackable && slotItem.ItemSO == item && slotItem.Count < _maxStack)
+                {
+                    slotItem.Count++;
+                    return;
+                }
+            }
+
+            for (int i = 0; i < InventorySlots.Length; i++)
+            {
+                var slot = InventorySlots[i];
+                if (!slot.GetComponentInChildren<InventoryItem>())
+                {
+                    var itemObj = Instantiate(_inventoryItemPrefab, slot.transform).GetComponent<InventoryItem>();
+                    itemObj.transform.SetAsFirstSibling();
+                    itemObj.AddItem(item);
+                    return;
+                }
             }
         }
     }
