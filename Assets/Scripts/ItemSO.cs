@@ -12,5 +12,5 @@ public class ItemSO : ScriptableObject
 public enum ItemType {
     Weapon, 
     Potion,
-    QuestItem 
+    Armor
 }

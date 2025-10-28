@@ -14,7 +14,9 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] private ItemSO[] _sortOrder;
 
-    [SerializeField] private InventorySlot[] InventorySlots;
+    [SerializeField] private InventorySlot[] _inventorySlots;
+
+    [SerializeField] private Equipment[] _equipment;
 
     private int _selectedSlot = -1;
 
@@ -30,8 +32,8 @@ public class InventoryManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < InventorySlots.Length; i++)
-            InventorySlots[i].Id = i;
+        for (int i = 0; i < _inventorySlots.Length; i++)
+            _inventorySlots[i].Id = i;
     }
 
     public void AddItem()
@@ -40,9 +42,9 @@ public class InventoryManager : MonoBehaviour
 
         if (item != null)
         {
-            for (int i = 0; i < InventorySlots.Length; i++)
+            for (int i = 0; i < _inventorySlots.Length; i++)
             {
-                var slotItem = InventorySlots[i].GetComponentInChildren<InventoryItem>();
+                var slotItem = _inventorySlots[i].GetComponentInChildren<InventoryItem>();
                 if (slotItem != null && item.Stackable && slotItem.ItemSO == item && slotItem.Count < _maxStack)
                 {
                     slotItem.Count++;
@@ -50,9 +52,9 @@ public class InventoryManager : MonoBehaviour
                 }
             }
 
-            for (int i = 0; i < InventorySlots.Length; i++)
+            for (int i = 0; i < _inventorySlots.Length; i++)
             {
-                var slot = InventorySlots[i];
+                var slot = _inventorySlots[i];
                 if (!slot.GetComponentInChildren<InventoryItem>())
                 {
                     var itemObj = Instantiate(_inventoryItemPrefab, slot.transform).GetComponent<InventoryItem>();
@@ -68,7 +70,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (_selectedSlot >= 0)
         {
-            var slotItem = InventorySlots[_selectedSlot].GetComponentInChildren<InventoryItem>();
+            var slotItem = _inventorySlots[_selectedSlot].GetComponentInChildren<InventoryItem>();
             if (slotItem != null)
             {
                 if (slotItem.Count == 1) Destroy(slotItem.gameObject);
@@ -79,35 +81,47 @@ public class InventoryManager : MonoBehaviour
 
     public void ConfirmDrop()
     {
-        var slotItem = InventorySlots[_selectedSlot].GetComponentInChildren<InventoryItem>();
+        var slotItem = _inventorySlots[_selectedSlot].GetComponentInChildren<InventoryItem>();
         slotItem.Count -= _dropManager.GetSliderValue();
     }
 
     public void SelectSlot(int id)
     {
-        if (_selectedSlot >= 0) InventorySlots[_selectedSlot].Deselect();
-        if (id == _selectedSlot && Time.time - _lastClickTime < _doubleClickTime) DoubleClick();
+        if (_selectedSlot >= 0) _inventorySlots[_selectedSlot].Deselect();
+        if (id == _selectedSlot && Time.time - _lastClickTime < _doubleClickTime) DoubleClick(id);
 
         _selectedSlot = id;
         _lastClickTime = Time.time;
     }
 
-    private void DoubleClick()
+    private void DoubleClick(int id)
     {
-        print("double click");
+        var item = _inventorySlots[id].GetComponentInChildren<InventoryItem>();
+        if (item == null) return;
+        else
+        {
+            for (int i = 0; i < _equipment.Length; i++)
+            {
+                if (_equipment[i].ItemType == item.ItemSO.ItemType)
+                {
+                    item.SetParent(_equipment[i].Slot);
+                    return;
+                }
+            }
+        }
     }
 
     public void Sort()
     {
-        Transform[] items = new Transform[InventorySlots.Length];
+        Transform[] items = new Transform[_inventorySlots.Length];
         int orderCounter = 0;
         int itemCounter = 0;
 
         while (orderCounter < _sortOrder.Length)
         {
-            for (int i = 0; i < InventorySlots.Length; i++)
+            for (int i = 0; i < _inventorySlots.Length; i++)
             {
-                InventoryItem child = InventorySlots[i].GetComponentInChildren<InventoryItem>();
+                InventoryItem child = _inventorySlots[i].GetComponentInChildren<InventoryItem>();
                 if (child != null && child.ItemSO == _sortOrder[orderCounter])
                 {
                     items[itemCounter] = child.transform;
@@ -121,7 +135,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (items[i] != null)
             {
-                items[i].GetComponent<InventoryItem>().SetParent(InventorySlots[i].transform);
+                items[i].GetComponent<InventoryItem>().SetParent(_inventorySlots[i].transform);
                 items[i].localPosition = Vector3.zero;
             }
         }
