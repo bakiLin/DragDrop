@@ -12,7 +12,7 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField] private DropdownManager _dropdownManager;
 
-    [SerializeField] private ItemType[] _sortOrder;
+    [SerializeField] private ItemSO[] _sortOrder;
 
     [SerializeField] private InventorySlot[] InventorySlots;
 
@@ -107,13 +107,10 @@ public class InventoryManager : MonoBehaviour
         {
             for (int i = 0; i < InventorySlots.Length; i++)
             {
-                Transform child = null;
-                if (InventorySlots[i].transform.childCount == 2)
-                    child = InventorySlots[i].transform.GetChild(1);
-
-                if (child != null && child.GetComponent<InventoryItem>().ItemSO.ItemType == _sortOrder[orderCounter])
+                InventoryItem child = InventorySlots[i].GetComponentInChildren<InventoryItem>();
+                if (child != null && child.ItemSO == _sortOrder[orderCounter])
                 {
-                    items[itemCounter] = child;
+                    items[itemCounter] = child.transform;
                     itemCounter++;
                 }
             }

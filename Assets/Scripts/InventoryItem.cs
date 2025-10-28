@@ -20,6 +20,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     
     public ItemSO ItemSO { get => _itemSO; set => _itemSO = value; }
 
+    public Transform Parent { get => _parent; }
+
     public event Action<int> OnRefreshCount;
 
     public event Action<bool> OnSetRaycastTarget;
@@ -55,6 +57,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         _parent = parent;
         transform.SetParent(_parent);
         transform.SetAsFirstSibling();
+        transform.localPosition = Vector2.zero;
     }
 
     public void AddItem(ItemSO item)
