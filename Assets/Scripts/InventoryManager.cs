@@ -1,8 +1,9 @@
 using UnityEngine;
+using Zenject;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private DropManager _dropManager;
+    [SerializeField] private ItemDrop _dropManager;
 
     [SerializeField] private int _maxStack;
 
@@ -21,6 +22,8 @@ public class InventoryManager : MonoBehaviour
     private int _selectedSlot = -1;
 
     private float _lastClickTime;
+
+    [Inject] private DiContainer _container;
 
     public static InventoryManager Instance;
 
@@ -57,7 +60,7 @@ public class InventoryManager : MonoBehaviour
                 var slot = _inventorySlots[i];
                 if (!slot.GetComponentInChildren<InventoryItem>())
                 {
-                    var itemObj = Instantiate(_inventoryItemPrefab, slot.transform).GetComponent<InventoryItem>();
+                    var itemObj = _container.InstantiatePrefab(_inventoryItemPrefab, slot.transform).GetComponent<InventoryItem>();
                     itemObj.transform.SetAsFirstSibling();
                     itemObj.AddItem(item);
                     return;
@@ -82,7 +85,7 @@ public class InventoryManager : MonoBehaviour
     public void ConfirmDrop()
     {
         var slotItem = _inventorySlots[_selectedSlot].GetComponentInChildren<InventoryItem>();
-        slotItem.Count -= _dropManager.GetSliderValue();
+        slotItem.Count -= _dropManager.ConfirmItemDrop();
     }
 
     public void SelectSlot(int id)

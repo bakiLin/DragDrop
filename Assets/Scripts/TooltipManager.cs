@@ -7,18 +7,15 @@ public class TooltipManager : MonoBehaviour
     private TextMeshProUGUI _tooltipText;
 
     [SerializeField]
-    private Vector2 _offset;
+    private Canvas _canvas;
 
     [SerializeField]
-    private Canvas _canvas;
+    private Vector2 _offset;
 
     private Transform _tooltip;
 
-    public static TooltipManager Instance;
-
     private void Awake()
     {
-        Instance = this;
         _tooltip = _tooltipText.transform.parent;
     }
 

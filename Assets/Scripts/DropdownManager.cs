@@ -3,7 +3,7 @@ using UnityEngine;
 public class DropdownManager : MonoBehaviour
 {
     [SerializeField]
-    private AdvancedDropdown _itemTypeDropdown, _itemDropdown;
+    private AdvancedDropdown _typeDropdown, _itemDropdown;
 
     [SerializeField]
     private ItemTypeGroup[] _itemType;
@@ -17,10 +17,10 @@ public class DropdownManager : MonoBehaviour
 
     private void Start()
     {
-        _itemTypeDropdown.DeleteAllOptions();
+        _typeDropdown.DeleteAllOptions();
         for (int i = 0; i < _itemType.Length; i++)
-            _itemTypeDropdown.AddOptions(_formatter.Format(_itemType[i].ItemType.ToString()));
-        _itemTypeDropdown.onChangedValue += RefreshItemDropdown;
+            _typeDropdown.AddOptions(_formatter.Format(_itemType[i].ItemType.ToString()));
+        _typeDropdown.onChangedValue += RefreshItemDropdown;
     }
 
     private void RefreshItemDropdown(int value)
@@ -34,8 +34,8 @@ public class DropdownManager : MonoBehaviour
     public ItemSO GetSelectedItem()
     {
         if (_itemDropdown.optionsList.Count > 0)
-            return _itemType[_itemTypeDropdown.value].Items[_itemDropdown.value];
-        else return null;
+            return _itemType[_typeDropdown.value].Items[_itemDropdown.value];
+        return null;
     }
 }
 
