@@ -96,15 +96,23 @@ public class InventoryManager : MonoBehaviour
 
     private void DoubleClick(int id)
     {
-        var item = _inventorySlots[id].GetComponentInChildren<InventoryItem>();
-        if (item == null) return;
+        var clickedItem = _inventorySlots[id].GetComponentInChildren<InventoryItem>();
+        if (clickedItem == null) return;
         else
         {
             for (int i = 0; i < _equipment.Length; i++)
             {
-                if (_equipment[i].ItemType == item.ItemSO.ItemType)
+                if (_equipment[i].ItemType == clickedItem.ItemSO.ItemType)
                 {
-                    item.SetParent(_equipment[i].Slot);
+                    var slotItem = _equipment[i].Slot.GetComponentInChildren<InventoryItem>();
+                    if (slotItem == null)
+                        clickedItem.SetParent(_equipment[i].Slot);
+                    else
+                    {
+                        var parent = clickedItem.Parent;
+                        clickedItem.SetParent(slotItem.Parent);
+                        slotItem.SetParent(parent);
+                    }
                     return;
                 }
             }
