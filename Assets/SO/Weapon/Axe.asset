@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Axe
   m_EditorClassIdentifier: 
   Sprite: {fileID: -53755893, guid: 748d1cd95bd2af547a5cfd56e657f73c, type: 3}
-  Description: Axe
+  Description: mighty axe
   ItemType: 0
   Stackable: 0

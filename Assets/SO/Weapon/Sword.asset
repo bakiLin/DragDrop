@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Sword
   m_EditorClassIdentifier: 
   Sprite: {fileID: 1658838580, guid: 748d1cd95bd2af547a5cfd56e657f73c, type: 3}
-  Description: Sword
+  Description: sharpest sword
   ItemType: 0
   Stackable: 0

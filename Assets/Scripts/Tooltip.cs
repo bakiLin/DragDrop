@@ -16,16 +16,12 @@ public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (_inventoryItem.ItemSO != null)
-        {
             _tooltipManager.EnableTooltip(_inventoryItem.ItemSO.Description, transform.position);
-        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (_inventoryItem.ItemSO != null)
-        {
             _tooltipManager.DisableTooltip();
-        }
     }
 }

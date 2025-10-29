@@ -9,25 +9,28 @@ public class TooltipManager : MonoBehaviour
     [SerializeField]
     private Vector2 _offset;
 
+    [SerializeField]
+    private Canvas _canvas;
+
+    private Transform _tooltip;
+
     public static TooltipManager Instance;
 
     private void Awake()
     {
         Instance = this;
+        _tooltip = _tooltipText.transform.parent;
     }
 
     public void EnableTooltip(string text, Vector2 position)
     {
         _tooltipText.text = text;
-
-        var parent = _tooltipText.transform.parent;
-        parent.position = position + _offset;
-        parent.gameObject.SetActive(true);
+        _tooltip.position = position + _offset * _canvas.scaleFactor;
+        _tooltip.gameObject.SetActive(true);
     }
 
     public void DisableTooltip()
     {
-        var parent = _tooltipText.transform.parent;
-        parent.gameObject.SetActive(false);
+        _tooltip.gameObject.SetActive(false);
     }
 }
