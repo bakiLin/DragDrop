@@ -4,11 +4,9 @@ using UnityEngine.UI;
 
 public class ItemDrop : MonoBehaviour
 {
-    [SerializeField]
-    private Slider _slider;
+    [SerializeField] private Slider _slider;
 
-    [SerializeField]
-    private TextMeshProUGUI _dropCountText;
+    [SerializeField] private TextMeshProUGUI _dropCountText;
 
     private Transform _itemDropWindow;
 

@@ -14,7 +14,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         get => _count;
         set {
             _count = value;
-            RefreshCount();
+            if (_count <= 0) Destroy(gameObject);
+            OnRefreshCount?.Invoke(_count);
         }
     }
     
@@ -60,16 +61,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         transform.localPosition = Vector2.zero;
     }
 
-    public void AddItem(ItemSO item)
+    public void Initialize(ItemSO item)
     {
         _itemSO = item;
         OnSetSprite?.Invoke(_itemSO.Sprite);
-        RefreshCount();
-    }
-
-    private void RefreshCount()
-    {
         OnRefreshCount?.Invoke(_count);
-        if (_count <= 0) Destroy(gameObject);
     }
 }

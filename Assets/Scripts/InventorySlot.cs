@@ -1,22 +1,18 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 [System.Serializable]
 public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler
 {
-    private InventoryManager _inventoryManager;
+    [Inject] private InventoryManager _inventoryManager;
 
     private int _id;
 
     public int Id { get => _id; set => _id = value; }
 
     public event Action OnSelect, OnDeselect;
-
-    private void Awake()
-    {
-        _inventoryManager = InventoryManager.Instance;
-    }
 
     public void Select() => OnSelect?.Invoke(); 
 
@@ -35,7 +31,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler
 
         if (slotItem == null)
             droppedItem.SetParent(transform);
-        else if (droppedItem.ItemSO.Stackable && CombineStackableItem(droppedItem, slotItem))
+        else if (CombineStackableItem(droppedItem, slotItem))
             return;
         else
         {
@@ -47,6 +43,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler
 
     private bool CombineStackableItem(InventoryItem droppedItem, InventoryItem slotItem)
     {
+        if (droppedItem.ItemSO.Stackable) return false;
         if (droppedItem.ItemSO.name == slotItem.ItemSO.name)
         {
             slotItem.Count += droppedItem.Count;

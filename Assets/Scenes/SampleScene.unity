@@ -468,6 +468,7 @@ GameObject:
   m_Component:
   - component: {fileID: 205904043}
   - component: {fileID: 205904044}
+  - component: {fileID: 205904045}
   m_Layer: 0
   m_Name: Inventory Manager
   m_TagString: Untagged
@@ -502,7 +503,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13cce2b8bd3a0af44830a9b600f3b8cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dropManager: {fileID: 930236155}
   _maxStack: 5
   _doubleClickTime: 0.2
   _inventoryItemPrefab: {fileID: 8978813557185908027, guid: 800d139b916dee0419529e25e5440f4b, type: 3}
@@ -510,10 +510,10 @@ MonoBehaviour:
   _sortOrder:
   - {fileID: 11400000, guid: 5c02dbb7cefa2f44db1d66bb15e424e7, type: 2}
   - {fileID: 11400000, guid: 2cc10de9c1a52d444bcbb9800f5f2a29, type: 2}
-  - {fileID: 11400000, guid: ee8e7f6da27291a43a2355e0672606ab, type: 2}
-  - {fileID: 11400000, guid: 274ffb84451d0b440a1b23fe14f790e3, type: 2}
   - {fileID: 11400000, guid: 6686685eb5da49c48ab2b65e6e71921e, type: 2}
   - {fileID: 11400000, guid: e846198e92b64b043aeb12fea99143bb, type: 2}
+  - {fileID: 11400000, guid: ee8e7f6da27291a43a2355e0672606ab, type: 2}
+  - {fileID: 11400000, guid: 274ffb84451d0b440a1b23fe14f790e3, type: 2}
   _inventorySlots:
   - {fileID: 7770484299057967330}
   - {fileID: 1363881057}
@@ -540,6 +540,21 @@ MonoBehaviour:
     Slot: {fileID: 7635285475757767141}
   - ItemType: 2
     Slot: {fileID: 1904314967}
+--- !u!114 &205904045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205904042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 817a8aebeee393543869f18d1b15d840, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _drop: {fileID: 1248246384}
+  _confirmDrop: {fileID: 1323205942}
+  _sort: {fileID: 823878483}
 --- !u!1 &252539581
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,6 +719,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TooltipManager: {fileID: 1373065225}
+  InventoryManager: {fileID: 205904044}
+  ItemDrop: {fileID: 930236155}
 --- !u!4 &268311221
 Transform:
   m_ObjectHideFlags: 0
@@ -2672,19 +2689,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 823878484}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 205904044}
-        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
-        m_MethodName: Sort
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &823878484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3541,19 +3546,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1248246385}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 205904044}
-        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
-        m_MethodName: DropItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1248246385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3825,7 +3818,7 @@ GameObject:
   - component: {fileID: 1323205943}
   - component: {fileID: 1323205942}
   m_Layer: 5
-  m_Name: Confirm Button
+  m_Name: Confirm (Button)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3864,13 +3857,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -3894,19 +3887,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1323205943}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 205904044}
-        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
-        m_MethodName: ConfirmDrop
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1323205943
 MonoBehaviour:
   m_ObjectHideFlags: 0

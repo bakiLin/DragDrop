@@ -2,11 +2,9 @@ using UnityEngine;
 
 public class DropdownManager : MonoBehaviour
 {
-    [SerializeField]
-    private AdvancedDropdown _typeDropdown, _itemDropdown;
+    [SerializeField] private AdvancedDropdown _typeDropdown, _itemDropdown;
 
-    [SerializeField]
-    private ItemTypeGroup[] _itemType;
+    [SerializeField] private ItemTypeGroup[] _itemType;
 
     private EnumToString _formatter;
 

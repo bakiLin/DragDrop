@@ -13,8 +13,8 @@ public class InventoryItemPresenter : MonoBehaviour
     private void Awake()
     {
         _inventoryItem = GetComponent<InventoryItem>();
-        _countText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         _image = GetComponent<Image>();
+        _countText = transform.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void OnEnable()

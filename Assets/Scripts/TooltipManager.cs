@@ -3,14 +3,11 @@ using UnityEngine;
 
 public class TooltipManager : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI _tooltipText;
+    [SerializeField] private TextMeshProUGUI _tooltipText;
 
-    [SerializeField]
-    private Canvas _canvas;
+    [SerializeField] private Canvas _canvas;
 
-    [SerializeField]
-    private Vector2 _offset;
+    [SerializeField] private Vector2 _offset;
 
     private Transform _tooltip;
 

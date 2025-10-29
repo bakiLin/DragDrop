@@ -9,7 +9,8 @@ public class ItemSO : ScriptableObject
     public bool Stackable;
 }
 
-public enum ItemType {
+public enum ItemType 
+{
     Weapon, 
     Potion,
     Armor

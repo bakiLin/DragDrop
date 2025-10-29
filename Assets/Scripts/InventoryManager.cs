@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private ItemDrop _dropManager;
+    [Inject] private DiContainer _container;
+
+    [Inject] private ItemDrop _itemDrop;
 
     [SerializeField] private int _maxStack;
 
@@ -23,16 +26,6 @@ public class InventoryManager : MonoBehaviour
 
     private float _lastClickTime;
 
-    [Inject] private DiContainer _container;
-
-    public static InventoryManager Instance;
-
-    private void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-    }
-
     private void Start()
     {
         for (int i = 0; i < _inventorySlots.Length; i++)
@@ -41,7 +34,7 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem()
     {
-        var item = _dropdownManager.GetSelectedItem();
+        ItemSO item = _dropdownManager.GetSelectedItem();
 
         if (item != null)
         {
@@ -62,7 +55,7 @@ public class InventoryManager : MonoBehaviour
                 {
                     var itemObj = _container.InstantiatePrefab(_inventoryItemPrefab, slot.transform).GetComponent<InventoryItem>();
                     itemObj.transform.SetAsFirstSibling();
-                    itemObj.AddItem(item);
+                    itemObj.Initialize(item);
                     return;
                 }
             }
@@ -77,7 +70,7 @@ public class InventoryManager : MonoBehaviour
             if (slotItem != null)
             {
                 if (slotItem.Count == 1) Destroy(slotItem.gameObject);
-                else _dropManager.InitializeSlider(slotItem.Count);
+                else _itemDrop.InitializeSlider(slotItem.Count);
             }
         }
     }
@@ -85,21 +78,21 @@ public class InventoryManager : MonoBehaviour
     public void ConfirmDrop()
     {
         var slotItem = _inventorySlots[_selectedSlot].GetComponentInChildren<InventoryItem>();
-        slotItem.Count -= _dropManager.ConfirmItemDrop();
+        slotItem.Count -= _itemDrop.ConfirmItemDrop();
     }
 
     public void SelectSlot(int id)
     {
         if (_selectedSlot >= 0) _inventorySlots[_selectedSlot].Deselect();
-        if (id == _selectedSlot && Time.time - _lastClickTime < _doubleClickTime) DoubleClick(id);
+        if (id == _selectedSlot && Time.time - _lastClickTime < _doubleClickTime) DoubleClick();
 
         _selectedSlot = id;
         _lastClickTime = Time.time;
     }
 
-    private void DoubleClick(int id)
+    private void DoubleClick()
     {
-        var clickedItem = _inventorySlots[id].GetComponentInChildren<InventoryItem>();
+        var clickedItem = _inventorySlots[_selectedSlot].GetComponentInChildren<InventoryItem>();
         if (clickedItem == null) return;
         else
         {
@@ -124,9 +117,8 @@ public class InventoryManager : MonoBehaviour
 
     public void Sort()
     {
-        Transform[] items = new Transform[_inventorySlots.Length];
-        int orderCounter = 0;
-        int itemCounter = 0;
+        List<InventoryItem> itemList = new List<InventoryItem>();
+        int orderCounter = 0, itemCounter = 0;
 
         while (orderCounter < _sortOrder.Length)
         {
@@ -135,20 +127,17 @@ public class InventoryManager : MonoBehaviour
                 InventoryItem child = _inventorySlots[i].GetComponentInChildren<InventoryItem>();
                 if (child != null && child.ItemSO == _sortOrder[orderCounter])
                 {
-                    items[itemCounter] = child.transform;
+                    itemList.Add(child);
                     itemCounter++;
                 }
             }
             orderCounter++;
         }
 
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < itemList.Count; i++)
         {
-            if (items[i] != null)
-            {
-                items[i].GetComponent<InventoryItem>().SetParent(_inventorySlots[i].transform);
-                items[i].localPosition = Vector3.zero;
-            }
+            itemList[i].SetParent(_inventorySlots[i].transform);
+            itemList[i].transform.localPosition = Vector3.zero;
         }
     }
 }
