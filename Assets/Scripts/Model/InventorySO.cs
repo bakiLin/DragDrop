@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/InventorySO", fileName = "InventorySO")]
@@ -18,16 +19,72 @@ public class InventorySO : ScriptableObject
             _itemDataList.Add(new InventoryItemData());
     }
 
-    public void AddItem(ItemSO item, int count)
+    public int AddItem(ItemSO item, int count)
+    {
+        if (!item.IsStackable)
+        {
+            for (int i = 0; i < _itemDataList.Count; i++)
+            {
+                while (count > 0 && !IsInventoryFull())
+                {
+                    count -= AddItemToFirstFreeSlot(item, 1);
+                }
+                return count;   
+            }
+        }
+
+        count = AddStackableItem(item, count);
+        return count;
+    }
+
+    private int AddItemToFirstFreeSlot(ItemSO item, int count)
     {
         for (int i = 0; i < _itemDataList.Count; i++)
         {
             if (_itemDataList[i].IsEmpty)
             {
                 _itemDataList[i] = new InventoryItemData(item, count);
-                return;
+                return count;
             }
         }
+        return 0;
+    }
+
+    private bool IsInventoryFull()
+    {
+        return !_itemDataList.Where(item => item.IsEmpty).Any();
+    }
+
+    private int AddStackableItem(ItemSO item, int count)
+    {
+        for (int i = 0; i < _itemDataList.Count; i++)
+        {
+            if (_itemDataList[i].IsEmpty) continue;
+            if (_itemDataList[i].Item.Id == item.Id)
+            {
+                int numToFull = _itemDataList[i].Item.MaxStackSize - _itemDataList[i].Count;
+
+                if (count > numToFull)
+                {
+                    _itemDataList[i] = new InventoryItemData(_itemDataList[i].Item, _itemDataList[i].Item.MaxStackSize);
+                    count -= numToFull;
+                }
+                else
+                {
+                    _itemDataList[i] = new InventoryItemData(_itemDataList[i].Item, _itemDataList[i].Count + count);
+                    return 0;
+                }
+            }
+        }
+
+        while (count > 0 && !IsInventoryFull())
+        {
+            int newCount = Mathf.Clamp(count, 0, item.MaxStackSize);
+            count -= newCount;
+            AddItemToFirstFreeSlot(item, newCount);
+        }
+
+        return count;
     }
 
     public Dictionary<int, InventoryItemData> GetInventoryState()
