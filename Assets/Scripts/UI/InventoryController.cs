@@ -1,10 +1,7 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
-    public List<InventoryItemData> _initialItems = new();
-
     [SerializeField] 
     private InventoryPresenter _inventory;
 
@@ -13,6 +10,8 @@ public class InventoryController : MonoBehaviour
 
     private void Start()
     {
+        _inventoryData.OnInventoryDataChanged += UpdateInventoryUI;
+
         InitUI();
         InitInventoryData();
     }
@@ -20,12 +19,6 @@ public class InventoryController : MonoBehaviour
     private void InitInventoryData()
     {
         _inventoryData.Init();
-        foreach (var item in _initialItems)
-        {
-            if (item.IsEmpty) continue;
-            _inventoryData.AddItem(item.Item, item.Count);
-        }
-        UpdateInventoryUI();
     }
 
     private void InitUI()
@@ -64,7 +57,6 @@ public class InventoryController : MonoBehaviour
     private void HandleSwapItems(int index_1, int index_2)
     {
         _inventoryData.SwapItems(index_1, index_2);
-        UpdateInventoryUI();
     }
 
     private void HandleItemSelection(int index)

@@ -10,6 +10,8 @@ public class InventorySO : ScriptableObject
     [field: Range(1, 20)]
     public int Size { get; private set; }
 
+    public event Action OnInventoryDataChanged;
+
     private List<InventoryItemData> _itemDataList;
 
     public void Init()
@@ -23,17 +25,14 @@ public class InventorySO : ScriptableObject
     {
         if (!item.IsStackable)
         {
-            for (int i = 0; i < _itemDataList.Count; i++)
-            {
-                while (count > 0 && !IsInventoryFull())
-                {
-                    count -= AddItemToFirstFreeSlot(item, 1);
-                }
-                return count;   
-            }
+            while (count > 0 && !IsInventoryFull())
+                count -= AddItemToFirstFreeSlot(item, 1);
+            OnInventoryDataChanged?.Invoke();
+            return count;
         }
 
         count = AddStackableItem(item, count);
+        OnInventoryDataChanged?.Invoke();
         return count;
     }
 
@@ -108,6 +107,8 @@ public class InventorySO : ScriptableObject
         InventoryItemData item = _itemDataList[index_1];
         _itemDataList[index_1] = _itemDataList[index_2];
         _itemDataList[index_2] = item;
+
+        OnInventoryDataChanged?.Invoke();
     }
 }
 

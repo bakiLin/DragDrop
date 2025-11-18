@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 710de45475b956c40b965616cd98a3f1, type: 3}
   m_Name: Health Potion
   m_EditorClassIdentifier: 
-  <IsStackable>k__BackingField: 0
-  <MaxStackSize>k__BackingField: 1
+  <IsStackable>k__BackingField: 1
+  <MaxStackSize>k__BackingField: 5
   <Name>k__BackingField: HP Potion
   <Description>k__BackingField: Health Potion
   <Sprite>k__BackingField: {fileID: 1607882201, guid: 748d1cd95bd2af547a5cfd56e657f73c, type: 3}
