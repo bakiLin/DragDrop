@@ -1,7 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "SO/ItemSO", fileName = "ItemSO")]
-public class ItemSO : ScriptableObject
+public abstract class ItemSO : ScriptableObject
 {
     public int Id => GetInstanceID();
 

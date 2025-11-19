@@ -36,6 +36,22 @@ public class InventorySO : ScriptableObject
         return count;
     }
 
+    public void RemoveItem(int index, int count)
+    {
+        if (_itemDataList.Count > index)
+        {
+            if (_itemDataList[index].IsEmpty) return;
+
+            int itemCountLeft = _itemDataList[index].Count - count;
+            if (itemCountLeft <= 0)
+                _itemDataList[index] = new InventoryItemData();
+            else
+                _itemDataList[index] = new InventoryItemData(_itemDataList[index].Item, itemCountLeft);
+
+            OnInventoryDataChanged?.Invoke();
+        }
+    }
+
     private int AddItemToFirstFreeSlot(ItemSO item, int count)
     {
         for (int i = 0; i < _itemDataList.Count; i++)

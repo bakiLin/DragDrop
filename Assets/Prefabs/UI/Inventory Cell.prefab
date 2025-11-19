@@ -168,6 +168,7 @@ MonoBehaviour:
   _itemImage: {fileID: 3761599455878570537}
   _itemCountText: {fileID: 5331442430003051162}
   _borderImage: {fileID: 7161982113784169281}
+  _doubleClickTimeDelta: 0.4
 --- !u!1001 &3685831822658459320
 PrefabInstance:
   m_ObjectHideFlags: 0

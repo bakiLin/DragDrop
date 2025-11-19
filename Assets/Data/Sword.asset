@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 710de45475b956c40b965616cd98a3f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 76227d652daaeb84fb883c83bfe35e1e, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
   <IsStackable>k__BackingField: 0
   <MaxStackSize>k__BackingField: 1
   <Name>k__BackingField: Sword
-  <Description>k__BackingField: Sharp Sword
+  <Description>k__BackingField: 
   <Sprite>k__BackingField: {fileID: 1658838580, guid: 748d1cd95bd2af547a5cfd56e657f73c, type: 3}

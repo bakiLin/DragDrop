@@ -19,7 +19,10 @@ public class TooltipPresenter : MonoBehaviour
 
     public void SetTooltipData(string description)
     {
-        _tooltipText.text = description;
-        gameObject.SetActive(true);
+        if (description != string.Empty)
+        {
+            _tooltipText.text = description;
+            gameObject.SetActive(true);
+        }
     }
 }

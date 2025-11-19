@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
     [SerializeField] 
-    private InventoryPresenter _inventory;
+    private InventoryPresenter _inventoryUI;
 
     [SerializeField]
     private InventorySO _inventoryData;
@@ -23,19 +24,29 @@ public class InventoryController : MonoBehaviour
 
     private void InitUI()
     {
-        _inventory.InitInventory(_inventoryData.Size);
-        _inventory.OnDescriptionRequested += HandleDescriptionRequested;
-        _inventory.OnStartDragging += HandleDragging;
-        _inventory.OnSwapItems += HandleSwapItems;
-        _inventory.OnItemSelected += HandleItemSelection;
+        _inventoryUI.InitInventory(_inventoryData.Size);
+        _inventoryUI.OnDescriptionRequested += HandleDescriptionRequested;
+        _inventoryUI.OnStartDragging += HandleDragging;
+        _inventoryUI.OnSwapItems += HandleSwapItems;
+        _inventoryUI.OnItemSelected += HandleItemSelection;
+        _inventoryUI.OnDoubleClicked += HandleDoubleClicking;
+    }
+
+    private void HandleDoubleClicking(int index)
+    {
+        InventoryItemData inventoryItem = _inventoryData.GetItemAt(index);
+        if (inventoryItem.IsEmpty) return;
+
+        IDestroyable item = inventoryItem.Item as IDestroyable;
+        if (item != null) _inventoryData.RemoveItem(index, 1);
     }
 
     private void UpdateInventoryUI()
     {
-        _inventory.ResetAllItems();
+        _inventoryUI.ResetAllItems();
         var inventoryState = _inventoryData.GetInventoryState();
         foreach (var item in inventoryState)
-            _inventory.UpdateItemData(item.Key, item.Value.Item.Sprite, item.Value.Count);
+            _inventoryUI.UpdateItemData(item.Key, item.Value.Item.Sprite, item.Value.Count);
     }
 
     private void HandleDescriptionRequested(int index)
@@ -44,14 +55,14 @@ public class InventoryController : MonoBehaviour
         if (inventoryItem.IsEmpty) return;
 
         ItemSO item = inventoryItem.Item;
-        _inventory.UpdateTooltip(item.Description);
+        _inventoryUI.UpdateTooltip(item.Description);
     }
 
     private void HandleDragging(int index)
     {
         InventoryItemData inventoryItem = _inventoryData.GetItemAt(index);
         if (inventoryItem.IsEmpty) return;
-        _inventory.CreateDraggedItem(inventoryItem.Item.Sprite);
+        _inventoryUI.CreateDraggedItem(inventoryItem.Item.Sprite);
     }
 
     private void HandleSwapItems(int index_1, int index_2)
@@ -64,9 +75,9 @@ public class InventoryController : MonoBehaviour
         InventoryItemData inventoryItem = _inventoryData.GetItemAt(index);
         if (inventoryItem.IsEmpty)
         {
-            _inventory.DeselectAllItems();
+            _inventoryUI.DeselectAllItems();
             return;
         }
-        _inventory.SelectItem(index);
+        _inventoryUI.SelectItem(index);
     }
 }

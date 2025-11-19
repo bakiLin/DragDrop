@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Weapon
   <Items>k__BackingField:
-  - {fileID: 11400000, guid: 651659dfde05ab64ab7edc08fb5a7adc, type: 2}
+  - {fileID: 11400000, guid: 8a1b08979045d744387fe792a77791e2, type: 2}

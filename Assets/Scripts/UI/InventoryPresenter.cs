@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InventoryPresenter : MonoBehaviour
 {
-    public event Action<int> OnDescriptionRequested, OnStartDragging, OnItemSelected;
+    public event Action<int> OnDescriptionRequested, OnStartDragging, OnItemSelected, OnDoubleClicked;
 
     public event Action<int, int> OnSwapItems;
 
@@ -20,9 +20,14 @@ public class InventoryPresenter : MonoBehaviour
     [SerializeField] 
     private PointerFollower _pointerFollower;
 
+    [SerializeField]
+    private float _doubleClickTime;
+
     private List<ItemPresenter> _itemList = new();
 
-    private int _currentDraggedItemIndex = -1; 
+    private int _currentDraggedItemIndex = -1;
+
+    private float _lastTimeClicked;
 
     private void Awake()
     {
@@ -121,6 +126,15 @@ public class InventoryPresenter : MonoBehaviour
         int index = _itemList.IndexOf(item);
         if (index < 0) return;
         OnItemSelected?.Invoke(index);
+
+        float clickTimeDelta = Time.unscaledTime - _lastTimeClicked;
+        if (clickTimeDelta < _doubleClickTime && clickTimeDelta > 0.1f)
+        {
+            OnDoubleClicked?.Invoke(index);
+            _lastTimeClicked = 0f;
+            return;
+        }
+        _lastTimeClicked = Time.unscaledTime;
     }
 
     private void HandlePointerEntered(ItemPresenter item)
