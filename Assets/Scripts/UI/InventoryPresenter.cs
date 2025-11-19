@@ -104,7 +104,6 @@ public class InventoryPresenter : MonoBehaviour
         int index = _itemList.IndexOf(item);
         if (index < 0) return;
         _currentDraggedItemIndex = index;
-        HandleItemClicked(item);
         OnStartDragging?.Invoke(index);
     }
 
@@ -118,7 +117,6 @@ public class InventoryPresenter : MonoBehaviour
         int index = _itemList.IndexOf(item);
         if (index < 0 || _currentDraggedItemIndex < 0) return;
         OnSwapItems?.Invoke(_currentDraggedItemIndex, index);
-        HandleItemClicked(item);
     }
 
     private void HandleItemClicked(ItemPresenter item)
