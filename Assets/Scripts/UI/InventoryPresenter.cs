@@ -116,7 +116,7 @@ public class InventoryPresenter : MonoBehaviour
     private void HandleSwap(ItemPresenter item)
     {
         int index = _itemList.IndexOf(item);
-        if (index < 0) return;
+        if (index < 0 || _currentDraggedItemIndex < 0) return;
         OnSwapItems?.Invoke(_currentDraggedItemIndex, index);
         HandleItemClicked(item);
     }
