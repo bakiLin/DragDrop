@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68659dc2de8695b4b904ed6b0ff07b12, type: 3}
   m_Name: Potion Type
   m_EditorClassIdentifier: 
-  Name: Potion
+  <Name>k__BackingField: Potion
   <Items>k__BackingField:
   - {fileID: 11400000, guid: f91b4699bf7716e42beb170b909a3cc1, type: 2}

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68659dc2de8695b4b904ed6b0ff07b12, type: 3}
   m_Name: Weapon Type
   m_EditorClassIdentifier: 
-  Name: Weapon
+  <Name>k__BackingField: Weapon
   <Items>k__BackingField:
   - {fileID: 11400000, guid: 8a1b08979045d744387fe792a77791e2, type: 2}

@@ -13,37 +13,31 @@ public class ItemPresenter : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField] 
     private Image _itemImage;
 
+    [SerializeField]
+    private Image _selectionImage;
+
     [SerializeField] 
     private TextMeshProUGUI _itemCountText;
 
-    [SerializeField] 
-    private Image _borderImage;
-
     private bool _isEmpty = true;
-
-    private void Awake()
-    {
-        ResetData();
-        SelectItem(false);
-    }
 
     public void ResetData()
     {
-        _itemImage.gameObject.SetActive(false);
         _isEmpty = true;
+        _itemImage.gameObject.SetActive(false);
     }
 
     public void SelectItem(bool isActive)
     {
-        _borderImage.enabled = isActive;
+        _selectionImage.enabled = isActive;
     }
 
     public void SetData(Sprite sprite, int count)
     {
+        _isEmpty = false;
         _itemCountText.text = count.ToString();
         _itemImage.sprite = sprite;
         _itemImage.gameObject.SetActive(true);
-        _isEmpty = false;
     }
 
     public void OnBeginDrag(PointerEventData eventData)

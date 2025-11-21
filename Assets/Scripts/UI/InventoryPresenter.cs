@@ -12,13 +12,13 @@ public class InventoryPresenter : MonoBehaviour
     private ItemPresenter _itemPrefab;
 
     [SerializeField] 
-    private RectTransform _contentPanel;
-
-    [SerializeField] 
-    private TooltipPresenter _tooltip;
+    private Tooltip _tooltip;
 
     [SerializeField] 
     private PointerFollower _pointerFollower;
+
+    [SerializeField]
+    private RectTransform _contentPanel;
 
     [SerializeField]
     private float _doubleClickTime;
@@ -29,19 +29,11 @@ public class InventoryPresenter : MonoBehaviour
 
     private float _lastTimeClicked;
 
-    private void Awake()
-    {
-        _tooltip.ResetTooltipData();
-        _pointerFollower.Toggle(false);
-    }
-
     public void InitInventory(int inventorySize)
     {
         for (int i = 0; i < inventorySize; i++)
         {
-            ItemPresenter item = Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity);
-            item.transform.SetParent(_contentPanel);
-            item.transform.localScale = Vector3.one;
+            var item = Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity, _contentPanel);
             _itemList.Add(item);
 
             item.OnItemBeginDrag += HandleBeginDrag;
@@ -56,12 +48,10 @@ public class InventoryPresenter : MonoBehaviour
     public void UpdateItemData(int index, Sprite sprite, int count)
     {
         if (_itemList.Count > index)
-        {
             _itemList[index].SetData(sprite, count);
-        }
     }
 
-    public void CreateDraggedItem(Sprite sprite)
+    public void SetPointerFollower(Sprite sprite)
     {
         _pointerFollower.SetData(sprite);
         _pointerFollower.Toggle(true);
@@ -93,7 +83,7 @@ public class InventoryPresenter : MonoBehaviour
         }
     }
 
-    private void ResetDraggedItem()
+    private void ResetPointerFollower()
     {
         _pointerFollower.Toggle(false);
         _currentDraggedItemIndex = -1;
@@ -109,7 +99,7 @@ public class InventoryPresenter : MonoBehaviour
 
     private void HandleItemEndDrag(ItemPresenter item)
     {
-        ResetDraggedItem();
+        ResetPointerFollower();
     }
 
     private void HandleSwap(ItemPresenter item)

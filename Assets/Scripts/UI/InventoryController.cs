@@ -62,7 +62,7 @@ public class InventoryController : MonoBehaviour
     {
         InventoryItemData inventoryItem = _inventoryData.GetItemAt(index);
         if (inventoryItem.IsEmpty) return;
-        _inventoryUI.CreateDraggedItem(inventoryItem.Item.Sprite);
+        _inventoryUI.SetPointerFollower(inventoryItem.Item.Sprite);
     }
 
     private void HandleSwapItems(int index_1, int index_2)

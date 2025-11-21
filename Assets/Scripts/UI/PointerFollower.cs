@@ -6,12 +6,8 @@ public class PointerFollower : MonoBehaviour
     [SerializeField] 
     private Image _followerImage;
 
+    [SerializeField]
     private Canvas _canvas;
-
-    private void Awake()
-    {
-        _canvas = transform.root.GetComponent<Canvas>();
-    }
 
     private void Update()
     {
