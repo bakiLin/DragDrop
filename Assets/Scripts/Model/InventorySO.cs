@@ -44,9 +44,8 @@ public class InventorySO : ScriptableObject
         {
             if (_itemDataList[index].IsEmpty) return;
 
-            if (_itemDataList[index].Count > 1)
-                _itemDataList[index] = new InventoryItemData(_itemDataList[index].Item, _itemDataList[index].Count - 1);
-            else
+            _itemDataList[index] = _itemDataList[index].Count > 1 ?
+                new InventoryItemData(_itemDataList[index].Item, _itemDataList[index].Count - 1) :
                 _itemDataList[index] = new InventoryItemData();
 
             OnInventoryDataChanged?.Invoke();
@@ -80,20 +79,10 @@ public class InventorySO : ScriptableObject
 
     private void AddStackableItem(ItemSO item)
     {
-        for (int i = 0; i < _itemDataList.Count; i++)
-        {
-            if (_itemDataList[i].IsEmpty)
-                continue;
-            if (_itemDataList[i].Item.Id == item.Id)
-            {
-                if (MaxStackSize - _itemDataList[i].Count > 0)
-                {
-                    _itemDataList[i] = new InventoryItemData(_itemDataList[i].Item, _itemDataList[i].Count + 1);
-                    return;
-                }
-            }
-        }
-
-        AddItemToFirstFreeSlot(item);
+        int index = _itemDataList.FindIndex(x => !x.IsEmpty && x.Item.Id == item.Id && MaxStackSize - x.Count > 0);
+        if (index >= 0)
+            _itemDataList[index] = new InventoryItemData(_itemDataList[index].Item, _itemDataList[index].Count + 1);
+        else
+            AddItemToFirstFreeSlot(item);
     }
 }

@@ -35,7 +35,7 @@ public class ItemPresenter : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void SetData(Sprite sprite, int count)
     {
         _isEmpty = false;
-        _itemCountText.text = count.ToString();
+        _itemCountText.text = count == 1 ? "" : count.ToString();
         _itemImage.sprite = sprite;
         _itemImage.gameObject.SetActive(true);
     }

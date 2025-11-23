@@ -1,83 +1,75 @@
-using System;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
     [SerializeField] 
-    private InventoryPresenter _inventoryUI;
+    private InventoryPresenter _presenter;
 
     [SerializeField]
-    private InventorySO _inventoryData;
+    private InventorySO _data;
 
     private void Start()
     {
-        _inventoryData.OnInventoryDataChanged += UpdateInventoryUI;
-
         InitUI();
-        InitInventoryData();
-    }
-
-    private void InitInventoryData()
-    {
-        _inventoryData.Init();
+        _data.Init();
     }
 
     private void InitUI()
     {
-        _inventoryUI.InitInventory(_inventoryData.Size);
-        _inventoryUI.OnDescriptionRequested += HandleDescriptionRequested;
-        _inventoryUI.OnStartDragging += HandleDragging;
-        _inventoryUI.OnSwapItems += HandleSwapItems;
-        _inventoryUI.OnItemSelected += HandleItemSelection;
-        _inventoryUI.OnDoubleClicked += HandleDoubleClicking;
-    }
-
-    private void HandleDoubleClicking(int index)
-    {
-        InventoryItemData inventoryItem = _inventoryData.GetItemAt(index);
-        if (inventoryItem.IsEmpty) return;
-
-        IDestroyable item = inventoryItem.Item as IDestroyable;
-        if (item != null) _inventoryData.RemoveItem(index);
+        _data.OnInventoryDataChanged += UpdateInventoryUI;
+        _presenter.InitInventory(_data.Size);
+        _presenter.OnDescriptionRequested += HandleDescriptionRequested;
+        _presenter.OnStartDragging += HandleDragging;
+        _presenter.OnSwapItems += HandleSwapItems;
+        _presenter.OnItemSelected += HandleItemSelection;
+        _presenter.OnDoubleClicked += HandleDoubleClicking;
     }
 
     private void UpdateInventoryUI()
     {
-        _inventoryUI.ResetAllItems();
-        var inventoryState = _inventoryData.GetInventory();
-        foreach (var item in inventoryState)
-            _inventoryUI.UpdateItemData(item.Key, item.Value.Item.Sprite, item.Value.Count);
+        _presenter.ResetAllItems();
+        foreach (var item in _data.GetInventory())
+            _presenter.UpdateItemData(item.Key, item.Value.Item.Sprite, item.Value.Count);
     }
 
     private void HandleDescriptionRequested(int index)
     {
-        InventoryItemData inventoryItem = _inventoryData.GetItemAt(index);
+        InventoryItemData inventoryItem = _data.GetItemAt(index);
         if (inventoryItem.IsEmpty) return;
 
         ItemSO item = inventoryItem.Item;
-        _inventoryUI.UpdateTooltip(item.Description);
+        _presenter.UpdateTooltip(item.Description);
     }
 
     private void HandleDragging(int index)
     {
-        InventoryItemData inventoryItem = _inventoryData.GetItemAt(index);
+        InventoryItemData inventoryItem = _data.GetItemAt(index);
         if (inventoryItem.IsEmpty) return;
-        _inventoryUI.SetPointerFollower(inventoryItem.Item.Sprite);
+        _presenter.SetPointerFollower(inventoryItem.Item.Sprite);
     }
 
     private void HandleSwapItems(int index_1, int index_2)
     {
-        _inventoryData.SwapItems(index_1, index_2);
+        _data.SwapItems(index_1, index_2);
     }
 
     private void HandleItemSelection(int index)
     {
-        InventoryItemData inventoryItem = _inventoryData.GetItemAt(index);
+        InventoryItemData inventoryItem = _data.GetItemAt(index);
         if (inventoryItem.IsEmpty)
         {
-            _inventoryUI.DeselectAllItems();
+            _presenter.DeselectAllItems();
             return;
         }
-        _inventoryUI.SelectItem(index);
+        _presenter.SelectItem(index);
+    }
+
+    private void HandleDoubleClicking(int index)
+    {
+        InventoryItemData inventoryItem = _data.GetItemAt(index);
+        if (inventoryItem.IsEmpty) return;
+
+        IDestroyable item = inventoryItem.Item as IDestroyable;
+        if (item != null) _data.RemoveItem(index);
     }
 }
