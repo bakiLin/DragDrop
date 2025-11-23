@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InventoryPresenter : MonoBehaviour
 {
-    public event Action<int> OnDescriptionRequested, OnStartDragging, OnItemSelected, OnDoubleClicked;
+    public event Action<int> OnDescriptionRequested, OnStartDragging, OnDoubleClicked;
 
     public event Action<int, int> OnSwapItems;
 
@@ -77,16 +77,12 @@ public class InventoryPresenter : MonoBehaviour
     public void ResetAllItems()
     {
         foreach (var item in _itemList)
-        {
             item.ResetData();
-            item.SelectItem(false);
-        }
     }
 
     private void HandleBeginDrag(ItemPresenter item)
     {
         int index = _itemList.IndexOf(item);
-        if (index < 0) return;
         _currentDraggedItemIndex = index;
         OnStartDragging?.Invoke(index);
     }
@@ -107,8 +103,7 @@ public class InventoryPresenter : MonoBehaviour
     private void HandleItemClicked(ItemPresenter item)
     {
         int index = _itemList.IndexOf(item);
-        if (index < 0) return;
-        OnItemSelected?.Invoke(index);
+        SelectItem(index);
 
         float clickTimeDelta = Time.unscaledTime - _lastTimeClicked;
         if (clickTimeDelta < _doubleClickTime && clickTimeDelta > 0.1f)
@@ -123,7 +118,6 @@ public class InventoryPresenter : MonoBehaviour
     private void HandlePointerEntered(ItemPresenter item)
     {
         int index = _itemList.IndexOf(item);
-        if (index < 0) return;
         OnDescriptionRequested?.Invoke(index);
     }
 

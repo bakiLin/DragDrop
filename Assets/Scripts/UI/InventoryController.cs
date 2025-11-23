@@ -21,7 +21,6 @@ public class InventoryController : MonoBehaviour
         _presenter.OnDescriptionRequested += HandleDescriptionRequested;
         _presenter.OnStartDragging += HandleDragging;
         _presenter.OnSwapItems += HandleSwapItems;
-        _presenter.OnItemSelected += HandleItemSelection;
         _presenter.OnDoubleClicked += HandleDoubleClicking;
     }
 
@@ -51,17 +50,6 @@ public class InventoryController : MonoBehaviour
     private void HandleSwapItems(int index_1, int index_2)
     {
         _data.SwapItems(index_1, index_2);
-    }
-
-    private void HandleItemSelection(int index)
-    {
-        InventoryItemData inventoryItem = _data.GetItemAt(index);
-        if (inventoryItem.IsEmpty)
-        {
-            _presenter.DeselectAllItems();
-            return;
-        }
-        _presenter.SelectItem(index);
     }
 
     private void HandleDoubleClicking(int index)
