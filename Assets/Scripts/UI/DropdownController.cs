@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class DropdownController : MonoBehaviour
@@ -13,19 +14,16 @@ public class DropdownController : MonoBehaviour
 
     private void Start()
     {
-        string[] options = new string[_itemTypes.Length];
-        for (int i = 0; i < options.Length; i++) options[i] = _itemTypes[i].Name;
-        _presenter.Init(options);
-
+        _presenter.Init(
+            _itemTypes.Select(x => x.Name).ToArray());
         _presenter.OnValueChanged += FillItemDropDown;
         _presenter.OnButtonClicked += CreateDropdownItem;
     }
 
     private void FillItemDropDown(int index)
     {
-        string[] options = new string[_itemTypes[index].Items.Length];
-        for (int i = 0; i < options.Length; i++) options[i] = _itemTypes[index].Items[i].Name;
-        _presenter.FillItemDropdown(options);
+        _presenter.FillItemDropdown(
+            _itemTypes[index].Items.Select(x => x.Name).ToArray());
     }
 
     private void CreateDropdownItem(int typeIndex, int itemIndex)

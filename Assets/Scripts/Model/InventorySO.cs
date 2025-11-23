@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/InventorySO", fileName = "InventorySO")]
@@ -54,12 +55,10 @@ public class InventorySO : ScriptableObject
 
     public Dictionary<int, InventoryItemData> GetInventory()
     {
-        Dictionary<int, InventoryItemData> dictionary = new();
-        for (int i = 0; i < _itemDataList.Count; i++)
-        {
-            if (_itemDataList[i].IsEmpty) continue;
-            dictionary[i] = _itemDataList[i];
-        }
+        var dictionary = _itemDataList
+            .Select((data, index) => (data, index))
+            .Where(x => !x.data.IsEmpty)
+            .ToDictionary(x => x.index, x => x.data);
         return dictionary;
     }
 
@@ -75,14 +74,8 @@ public class InventorySO : ScriptableObject
 
     private void AddItemToFirstFreeSlot(ItemSO item)
     {
-        for (int i = 0; i < _itemDataList.Count; i++)
-        {
-            if (_itemDataList[i].IsEmpty)
-            {
-                _itemDataList[i] = new InventoryItemData(item, 1);
-                return;
-            }
-        }
+        int index = _itemDataList.FindIndex(x => x.IsEmpty);
+        if (index >= 0) _itemDataList[index] = new InventoryItemData(item, 1);
     }
 
     private void AddStackableItem(ItemSO item)
