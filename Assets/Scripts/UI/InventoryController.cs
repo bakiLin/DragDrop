@@ -38,13 +38,13 @@ public class InventoryController : MonoBehaviour
         if (inventoryItem.IsEmpty) return;
 
         IDestroyable item = inventoryItem.Item as IDestroyable;
-        if (item != null) _inventoryData.RemoveItem(index, 1);
+        if (item != null) _inventoryData.RemoveItem(index);
     }
 
     private void UpdateInventoryUI()
     {
         _inventoryUI.ResetAllItems();
-        var inventoryState = _inventoryData.GetInventoryState();
+        var inventoryState = _inventoryData.GetInventory();
         foreach (var item in inventoryState)
             _inventoryUI.UpdateItemData(item.Key, item.Value.Item.Sprite, item.Value.Count);
     }

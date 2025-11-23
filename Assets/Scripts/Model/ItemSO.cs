@@ -16,8 +16,4 @@ public abstract class ItemSO : ScriptableObject
 
     [field: SerializeField] 
     public bool IsStackable { get; set; }
-
-    [field: SerializeField]
-    [field: Range(1, 1000)]
-    public int MaxStackSize { get; set; }
 }

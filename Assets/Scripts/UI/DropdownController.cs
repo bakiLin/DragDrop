@@ -10,13 +10,13 @@ public class DropdownController : MonoBehaviour
     private AdvancedDropdown _itemDropdown;
 
     [SerializeField]
-    private ItemTypeSO[] _itemTypes;
+    private Button _createButton;
 
     [SerializeField]
     private InventorySO _inventoryData;
 
     [SerializeField]
-    private Button _createButton;
+    private ItemTypeSO[] _itemTypes;
 
     private void Start()
     {
@@ -42,7 +42,7 @@ public class DropdownController : MonoBehaviour
         if (_itemTypeDropdown.value != -1 && _itemDropdown.value != -1)
         {
             ItemSO item = _itemTypes[_itemTypeDropdown.value].Items[_itemDropdown.value];
-            _inventoryData.AddItem(item, 1);
+            _inventoryData.AddItem(item);
         }
     }
 }
