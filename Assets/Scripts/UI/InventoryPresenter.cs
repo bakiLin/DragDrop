@@ -83,12 +83,6 @@ public class InventoryPresenter : MonoBehaviour
         }
     }
 
-    private void ResetPointerFollower()
-    {
-        _pointerFollower.Toggle(false);
-        _currentDraggedItemIndex = -1;
-    }
-
     private void HandleBeginDrag(ItemPresenter item)
     {
         int index = _itemList.IndexOf(item);
@@ -99,7 +93,8 @@ public class InventoryPresenter : MonoBehaviour
 
     private void HandleItemEndDrag(ItemPresenter item)
     {
-        ResetPointerFollower();
+        _pointerFollower.Toggle(false);
+        _currentDraggedItemIndex = -1;
     }
 
     private void HandleSwap(ItemPresenter item)
@@ -118,8 +113,8 @@ public class InventoryPresenter : MonoBehaviour
         float clickTimeDelta = Time.unscaledTime - _lastTimeClicked;
         if (clickTimeDelta < _doubleClickTime && clickTimeDelta > 0.1f)
         {
-            OnDoubleClicked?.Invoke(index);
             _lastTimeClicked = 0f;
+            OnDoubleClicked?.Invoke(index);
             return;
         }
         _lastTimeClicked = Time.unscaledTime;
