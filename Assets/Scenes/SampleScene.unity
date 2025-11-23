@@ -901,6 +901,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 530199325}
+  - component: {fileID: 530199327}
   - component: {fileID: 530199326}
   m_Layer: 0
   m_Name: Dropdown Controller
@@ -936,12 +937,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28b3ce67332b169499daa984fabecdbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemTypeDropdown: {fileID: 1686655114}
-  _itemDropdown: {fileID: 1882335957}
+  _presenter: {fileID: 530199327}
+  _inventoryData: {fileID: 11400000, guid: 3534fd7a0574ba3498e8c0f4d0be68c0, type: 2}
   _itemTypes:
   - {fileID: 11400000, guid: a8aa9b305d36fd04f943449694406304, type: 2}
   - {fileID: 11400000, guid: 6047db3eb3270934aaa22242110258c5, type: 2}
-  _inventoryData: {fileID: 11400000, guid: 3534fd7a0574ba3498e8c0f4d0be68c0, type: 2}
+--- !u!114 &530199327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530199324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae70cf9dacd9e1d448435b61981da256, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemTypeDropdown: {fileID: 1686655114}
+  _itemDropdown: {fileID: 1882335957}
   _createButton: {fileID: 1569999258}
 --- !u!1 &667832326
 GameObject:

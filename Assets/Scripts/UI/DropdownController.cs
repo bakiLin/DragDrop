@@ -1,48 +1,36 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DropdownController : MonoBehaviour
 {
-    [SerializeField] 
-    private AdvancedDropdown _itemTypeDropdown;
-
-    [SerializeField]
-    private AdvancedDropdown _itemDropdown;
-
-    [SerializeField]
-    private Button _createButton;
-
     [SerializeField]
     private InventorySO _inventoryData;
 
     [SerializeField]
     private ItemTypeSO[] _itemTypes;
 
+    [SerializeField]
+    private DropdownPresenter _presenter;
+
     private void Start()
     {
-        _itemTypeDropdown.DeleteAllOptions();
-        for (int i = 0; i < _itemTypes.Length; i++)
-            _itemTypeDropdown.AddOptions(_itemTypes[i].Name);
+        string[] options = new string[_itemTypes.Length];
+        for (int i = 0; i < options.Length; i++) options[i] = _itemTypes[i].Name;
+        _presenter.Init(options);
 
-        _itemTypeDropdown.onChangedValue += FillItemDropDown;  
-        _createButton.onClick.RemoveAllListeners();
-        _createButton.onClick.AddListener(CreateDropdownItem);
+        _presenter.OnValueChanged += FillItemDropDown;
+        _presenter.OnButtonClicked += CreateDropdownItem;
     }
 
     private void FillItemDropDown(int index)
     {
-        _itemDropdown.DeleteAllOptions();
-        for (int i = 0; i < _itemTypes[index].Items.Length; i++)
-            _itemDropdown.AddOptions(_itemTypes[index].Items[i].Name);
-        _itemDropdown.SelectOption(0);
+        string[] options = new string[_itemTypes[index].Items.Length];
+        for (int i = 0; i < options.Length; i++) options[i] = _itemTypes[index].Items[i].Name;
+        _presenter.FillItemDropdown(options);
     }
 
-    private void CreateDropdownItem()
+    private void CreateDropdownItem(int typeIndex, int itemIndex)
     {
-        if (_itemTypeDropdown.value != -1 && _itemDropdown.value != -1)
-        {
-            ItemSO item = _itemTypes[_itemTypeDropdown.value].Items[_itemDropdown.value];
-            _inventoryData.AddItem(item);
-        }
+        if (typeIndex != -1 && itemIndex != -1)
+            _inventoryData.AddItem(_itemTypes[typeIndex].Items[itemIndex]);
     }
 }
