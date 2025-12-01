@@ -1213,6 +1213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _presenter: {fileID: 1556766279}
   _data: {fileID: 11400000, guid: 3534fd7a0574ba3498e8c0f4d0be68c0, type: 2}
+  _doubleClickTime: 0.4
 --- !u!1 &796594296
 GameObject:
   m_ObjectHideFlags: 0
@@ -2379,14 +2380,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1556766277}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bde13e14284afe647aea44a1c1b12016, type: 3}
+  m_Script: {fileID: 11500000, guid: 9565c65cb408c404ebdd8335790f4192, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _itemPrefab: {fileID: 2893784264177240206, guid: 8e932ad1cbd23d048b3ded940862c159, type: 3}
   _tooltip: {fileID: 2012495821}
   _pointerFollower: {fileID: 1369994424}
   _contentPanel: {fileID: 1626834555}
-  _doubleClickTime: 0.4
 --- !u!1 &1569999256
 GameObject:
   m_ObjectHideFlags: 0

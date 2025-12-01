@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DropdownPresenter : MonoBehaviour
+public class DropdownView : MonoBehaviour
 {
     public event Action<int> OnValueChanged;
 

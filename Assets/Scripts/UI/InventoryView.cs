@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryPresenter : MonoBehaviour
+public class InventoryView : MonoBehaviour
 {
-    public event Action<int> OnDescriptionRequested, OnStartDragging, OnDoubleClicked;
+    public event Action<int> OnDescriptionRequested, OnStartDragging, OnClicked;
 
     public event Action<int, int> OnSwapItems;
 
     [SerializeField] 
-    private ItemPresenter _itemPrefab;
+    private ItemController _itemPrefab;
 
     [SerializeField] 
     private Tooltip _tooltip;
@@ -20,21 +20,16 @@ public class InventoryPresenter : MonoBehaviour
     [SerializeField]
     private RectTransform _contentPanel;
 
-    [SerializeField]
-    private float _doubleClickTime;
-
-    private List<ItemPresenter> _itemList = new();
+    private List<IItemView> _itemList = new();
 
     private int _currentDraggedItemIndex = -1;
-
-    private float _lastTimeClicked;
 
     public void InitInventory(int inventorySize)
     {
         for (int i = 0; i < inventorySize; i++)
         {
-            var item = Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity, _contentPanel);
-            _itemList.Add(item);
+            IItemController item = Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity, _contentPanel);
+            _itemList.Add(item as IItemView);
 
             item.OnItemBeginDrag += HandleBeginDrag;
             item.OnItemEndDrag += HandleItemEndDrag;
@@ -64,64 +59,54 @@ public class InventoryPresenter : MonoBehaviour
 
     public void DeselectAllItems()
     {
-        foreach (var item in _itemList)
-            item.SelectItem(false);
+        _itemList.ForEach(item => item.ToggleItem(false));
     }
 
     public void SelectItem(int index)
     {
         DeselectAllItems();
-        _itemList[index].SelectItem(true);
+        _itemList[index].ToggleItem(true);
     }
 
     public void ResetAllItems()
     {
-        foreach (var item in _itemList)
-            item.ResetData();
+        _itemList.ForEach(item => item.ResetData());
     }
 
-    private void HandleBeginDrag(ItemPresenter item)
+    private void HandleBeginDrag(IItemView item)
     {
         int index = _itemList.IndexOf(item);
         _currentDraggedItemIndex = index;
         OnStartDragging?.Invoke(index);
     }
 
-    private void HandleItemEndDrag(ItemPresenter item)
+    private void HandleItemEndDrag(IItemView item)
     {
         _pointerFollower.Toggle(false);
         _currentDraggedItemIndex = -1;
     }
 
-    private void HandleSwap(ItemPresenter item)
+    private void HandleSwap(IItemView item)
     {
         int index = _itemList.IndexOf(item);
         if (index < 0 || _currentDraggedItemIndex < 0) return;
         OnSwapItems?.Invoke(_currentDraggedItemIndex, index);
     }
 
-    private void HandleItemClicked(ItemPresenter item)
+    private void HandleItemClicked(IItemView item)
     {
         int index = _itemList.IndexOf(item);
         SelectItem(index);
-
-        float clickTimeDelta = Time.unscaledTime - _lastTimeClicked;
-        if (clickTimeDelta < _doubleClickTime && clickTimeDelta > 0.1f)
-        {
-            _lastTimeClicked = 0f;
-            OnDoubleClicked?.Invoke(index);
-            return;
-        }
-        _lastTimeClicked = Time.unscaledTime;
+        OnClicked?.Invoke(index);
     }
 
-    private void HandlePointerEntered(ItemPresenter item)
+    private void HandlePointerEntered(IItemView item)
     {
         int index = _itemList.IndexOf(item);
         OnDescriptionRequested?.Invoke(index);
     }
 
-    private void HandlePointerExited(ItemPresenter item)
+    private void HandlePointerExited(IItemView item)
     {
         _tooltip.ResetTooltipData();
     }

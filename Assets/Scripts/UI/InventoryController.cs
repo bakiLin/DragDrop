@@ -3,10 +3,17 @@ using UnityEngine;
 public class InventoryController : MonoBehaviour
 {
     [SerializeField] 
-    private InventoryPresenter _presenter;
+    private InventoryView _presenter;
 
     [SerializeField]
     private InventorySO _data;
+
+    [SerializeField]
+    private float _doubleClickTime;
+
+    private float _lastClickedTime;
+
+    private int _lastClickedIndex = -1;
 
     private void Start()
     {
@@ -21,7 +28,7 @@ public class InventoryController : MonoBehaviour
         _presenter.OnDescriptionRequested += HandleDescriptionRequested;
         _presenter.OnStartDragging += HandleDragging;
         _presenter.OnSwapItems += HandleSwapItems;
-        _presenter.OnDoubleClicked += HandleDoubleClicking;
+        _presenter.OnClicked += HandleClicking;
     }
 
     private void UpdateInventoryUI()
@@ -52,12 +59,21 @@ public class InventoryController : MonoBehaviour
         _data.SwapItems(index_1, index_2);
     }
 
+    private void HandleClicking(int index)
+    {
+        var delta = Time.unscaledTime - _lastClickedTime;
+        var isDoubleClick = delta < _doubleClickTime && delta > 0.1f && _lastClickedIndex == index;
+        _lastClickedTime = isDoubleClick ? 0f : Time.unscaledTime; 
+        if (isDoubleClick) HandleDoubleClicking(index);
+        _lastClickedIndex = index;
+    }
+
     private void HandleDoubleClicking(int index)
     {
         InventoryItemData inventoryItem = _data.GetItemAt(index);
         if (inventoryItem.IsEmpty) return;
 
-        IDestroyable item = inventoryItem.Item as IDestroyable;
+        IEdible item = inventoryItem.Item as IEdible;
         if (item != null) _data.RemoveItem(index);
     }
 }

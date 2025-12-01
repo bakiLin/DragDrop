@@ -1,49 +1,38 @@
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
-public class ItemPresenter : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, 
+public class ItemController : MonoBehaviour, IItemController, IItemView, IBeginDragHandler, IDragHandler, IEndDragHandler, 
     IDropHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public event Action<ItemPresenter> OnItemBeginDrag, OnItemEndDrag, OnItemDropped, 
+    public event Action<IItemView> OnItemBeginDrag, OnItemEndDrag, OnItemDropped, 
         OnItemClicked, OnPointerEntered, OnPointerExited;
 
-    [SerializeField] 
-    private Image _itemImage;
-
     [SerializeField]
-    private Image _selectionImage;
+    private ItemView _itemView;
 
-    [SerializeField] 
-    private TextMeshProUGUI _itemCountText;
-
-    private bool _isEmpty = true;
+    private bool _isEmpty;
 
     public void ResetData()
     {
         _isEmpty = true;
-        _itemImage.gameObject.SetActive(false);
-    }
-
-    public void SelectItem(bool isActive)
-    {
-        _selectionImage.enabled = isActive;
+        _itemView.ResetData();
     }
 
     public void SetData(Sprite sprite, int count)
     {
         _isEmpty = false;
-        _itemCountText.text = count == 1 ? "" : count.ToString();
-        _itemImage.sprite = sprite;
-        _itemImage.gameObject.SetActive(true);
+        _itemView.SetData(sprite, count);
+    }
+
+    public void ToggleItem(bool isActive)
+    {
+        _itemView.ToggleItem(isActive);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (_isEmpty) return;
-        OnItemBeginDrag?.Invoke(this);
+        if (!_isEmpty) OnItemBeginDrag?.Invoke(this);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -64,14 +53,12 @@ public class ItemPresenter : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (_isEmpty) return;
-        OnPointerEntered?.Invoke(this);
+        if (!_isEmpty) OnPointerEntered?.Invoke(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (_isEmpty) return;
-        OnPointerExited?.Invoke(this);
+        if (!_isEmpty) OnPointerExited?.Invoke(this);
     }
 
     public void OnDrag(PointerEventData eventData) { }

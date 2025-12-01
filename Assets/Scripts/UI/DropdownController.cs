@@ -7,10 +7,10 @@ public class DropdownController : MonoBehaviour
     private InventorySO _inventoryData;
 
     [SerializeField]
-    private ItemTypeSO[] _itemTypes;
+    private DropdownView _presenter;
 
     [SerializeField]
-    private DropdownPresenter _presenter;
+    private ItemTypeSO[] _itemTypes;
 
     private void Start()
     {
