@@ -14,6 +14,9 @@ public class InventorySO : ScriptableObject
     [SerializeField, Range(1, 100)]
     private int _maxStackSize;
 
+    //[SerializeField]
+    //private ItemTypeSO[] _equippableItemTypes;
+
     private List<InventoryItemData> _itemDataList;
 
     public void Init()
@@ -69,14 +72,12 @@ public class InventorySO : ScriptableObject
     {
         int index = _itemDataList.FindIndex(
             x => !x.IsEmpty && x.Item.Id == item.Id && _maxStackSize - x.Count > 0);
-
         if (index >= 0)
         {
             _itemDataList[index] = new InventoryItemData(_itemDataList[index].Item,
                 _itemDataList[index].Count + 1);
             return;
         }
-
         AddItemToFirstFreeSlot(item);
     }
 }
