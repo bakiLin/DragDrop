@@ -14,8 +14,7 @@ public class DropdownController : MonoBehaviour
 
     private void Start()
     {
-        _presenter.Init(
-            _itemTypes.Select(x => x.Name).ToArray());
+        _presenter.Init(_itemTypes.Select(x => x.Name).ToArray());
         _presenter.OnValueChanged += FillItemDropDown;
         _presenter.OnButtonClicked += CreateDropdownItem;
     }
