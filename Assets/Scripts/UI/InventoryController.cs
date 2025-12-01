@@ -3,7 +3,7 @@ using UnityEngine;
 public class InventoryController : MonoBehaviour
 {
     [SerializeField] 
-    private InventoryView _presenter;
+    private InventoryView _view;
 
     [SerializeField]
     private InventorySO _data;
@@ -24,34 +24,32 @@ public class InventoryController : MonoBehaviour
     private void InitUI()
     {
         _data.OnInventoryDataChanged += UpdateInventoryUI;
-        _presenter.InitInventory(_data.Size);
-        _presenter.OnDescriptionRequested += HandleDescriptionRequested;
-        _presenter.OnStartDragging += HandleDragging;
-        _presenter.OnSwapItems += HandleSwapItems;
-        _presenter.OnClicked += HandleClicking;
+        _view.InitInventory(_data.Size);
+        _view.OnDescriptionRequested += HandleDescriptionRequested;
+        _view.OnStartDragging += HandleDragging;
+        _view.OnSwapItems += HandleSwapItems;
+        _view.OnClicked += HandleClicking;
     }
 
     private void UpdateInventoryUI()
     {
-        _presenter.ResetAllItems();
+        _view.ResetAllItems();
         foreach (var item in _data.GetInventory())
-            _presenter.UpdateItemData(item.Key, item.Value.Item.Sprite, item.Value.Count);
+            _view.UpdateItemData(item.Key, item.Value.Item.Sprite, item.Value.Count);
     }
 
     private void HandleDescriptionRequested(int index)
     {
         InventoryItemData inventoryItem = _data.GetItemAt(index);
         if (inventoryItem.IsEmpty) return;
-
-        ItemSO item = inventoryItem.Item;
-        _presenter.UpdateTooltip(item.Description);
+        _view.UpdateTooltip(inventoryItem.Item.Description);
     }
 
     private void HandleDragging(int index)
     {
         InventoryItemData inventoryItem = _data.GetItemAt(index);
         if (inventoryItem.IsEmpty) return;
-        _presenter.SetPointerFollower(inventoryItem.Item.Sprite);
+        _view.SetPointerFollower(inventoryItem.Item.Sprite);
     }
 
     private void HandleSwapItems(int index_1, int index_2)

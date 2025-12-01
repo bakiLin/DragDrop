@@ -11,9 +11,7 @@ public class PointerFollower : MonoBehaviour
 
     private void Update()
     {
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            (RectTransform)_canvas.transform, Input.mousePosition, _canvas.worldCamera, out Vector2 position);
-        transform.position = _canvas.transform.TransformPoint(position);
+        SetPositionToPointer();
     }
 
     public void SetData(Sprite sprite)
@@ -23,6 +21,14 @@ public class PointerFollower : MonoBehaviour
 
     public void Toggle(bool isActive)
     {
+        SetPositionToPointer();
         gameObject.SetActive(isActive);
+    }
+
+    private void SetPositionToPointer()
+    {
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            (RectTransform)_canvas.transform, Input.mousePosition, _canvas.worldCamera, out Vector2 position);
+        transform.position = _canvas.transform.TransformPoint(position);
     }
 }

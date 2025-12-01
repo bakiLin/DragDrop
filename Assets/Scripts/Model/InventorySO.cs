@@ -6,70 +6,58 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/InventorySO", fileName = "InventorySO")]
 public class InventorySO : ScriptableObject
 {
-    [field: SerializeField]
-    [field: Range(1, 20)]
+    public event Action OnInventoryDataChanged;
+
+    [field: SerializeField, Range(1, 20)]
     public int Size { get; private set; }
 
-    [field: SerializeField]
-    [field: Range(1, 100)]
-    public int MaxStackSize { get; private set; }
-
-    public event Action OnInventoryDataChanged;
+    [SerializeField, Range(1, 100)]
+    private int _maxStackSize;
 
     private List<InventoryItemData> _itemDataList;
 
     public void Init()
     {
-        _itemDataList = new List<InventoryItemData>();
-        for (int i = 0; i < Size; i++)
-            _itemDataList.Add(new InventoryItemData());
+        _itemDataList = Enumerable.Range(0, Size)
+            .Select(_ => new InventoryItemData()).ToList();
     }
 
     public void AddItem(ItemSO item)
     {
-        if (!item.IsStackable)
-        {
-            AddItemToFirstFreeSlot(item);
-            OnInventoryDataChanged?.Invoke();
-            return;
-        }
-
-        AddStackableItem(item);
+        (item.IsStackable 
+            ? (Action<ItemSO>)AddStackableItem : AddItemToFirstFreeSlot)(item);
         OnInventoryDataChanged?.Invoke();
     }
 
     public void RemoveItem(int index)
     {
-        if (_itemDataList.Count > index)
-        {
-            if (_itemDataList[index].IsEmpty) return;
+        if (index >= _itemDataList.Count || _itemDataList[index].IsEmpty)
+            return;
 
-            _itemDataList[index] = _itemDataList[index].Count > 1 ?
-                new InventoryItemData(_itemDataList[index].Item, _itemDataList[index].Count - 1) :
-                _itemDataList[index] = new InventoryItemData();
-
-            OnInventoryDataChanged?.Invoke();
-        }
+        var item = _itemDataList[index];
+        _itemDataList[index] = item.Count > 1
+            ? new InventoryItemData(item.Item, item.Count - 1)
+            : new InventoryItemData();
+        OnInventoryDataChanged?.Invoke();
     }
 
     public Dictionary<int, InventoryItemData> GetInventory()
     {
-        var dictionary = _itemDataList
-            .Select((data, index) => (data, index))
+        return _itemDataList.Select((data, index) => (data, index))
             .Where(x => !x.data.IsEmpty)
             .ToDictionary(x => x.index, x => x.data);
-        return dictionary;
     }
 
-    public void SwapItems(int index_1, int index_2)
+    public void SwapItems(int i1, int i2)
     {
-        InventoryItemData item = _itemDataList[index_1];
-        _itemDataList[index_1] = _itemDataList[index_2];
-        _itemDataList[index_2] = item;
+        (_itemDataList[i1], _itemDataList[i2]) = (_itemDataList[i2], _itemDataList[i1]);
         OnInventoryDataChanged?.Invoke();
     }
 
-    public InventoryItemData GetItemAt(int index) => _itemDataList[index];
+    public InventoryItemData GetItemAt(int index)
+    {
+        return _itemDataList[index];
+    }
 
     private void AddItemToFirstFreeSlot(ItemSO item)
     {
@@ -79,10 +67,16 @@ public class InventorySO : ScriptableObject
 
     private void AddStackableItem(ItemSO item)
     {
-        int index = _itemDataList.FindIndex(x => !x.IsEmpty && x.Item.Id == item.Id && MaxStackSize - x.Count > 0);
+        int index = _itemDataList.FindIndex(
+            x => !x.IsEmpty && x.Item.Id == item.Id && _maxStackSize - x.Count > 0);
+
         if (index >= 0)
-            _itemDataList[index] = new InventoryItemData(_itemDataList[index].Item, _itemDataList[index].Count + 1);
-        else
-            AddItemToFirstFreeSlot(item);
+        {
+            _itemDataList[index] = new InventoryItemData(_itemDataList[index].Item,
+                _itemDataList[index].Count + 1);
+            return;
+        }
+
+        AddItemToFirstFreeSlot(item);
     }
 }
