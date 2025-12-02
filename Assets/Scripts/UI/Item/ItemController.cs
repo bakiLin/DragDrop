@@ -11,7 +11,7 @@ public class ItemController : MonoBehaviour, IItemController, IItemView, IBeginD
     [SerializeField]
     private ItemView _itemView;
 
-    private bool _isEmpty;
+    private bool _isEmpty = true;
 
     public void ResetData()
     {

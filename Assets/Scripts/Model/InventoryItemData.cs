@@ -7,11 +7,14 @@ public struct InventoryItemData
 
     public int Count;
 
+    public bool IsEquipment;
+
     public bool IsEmpty => Item == null;
 
-    public InventoryItemData(ItemSO item, int count)
+    public InventoryItemData(ItemSO item = null, int count = 0, bool isEquipment = false)
     {
         Item = item;
         Count = count;
+        IsEquipment = isEquipment;
     }
 }

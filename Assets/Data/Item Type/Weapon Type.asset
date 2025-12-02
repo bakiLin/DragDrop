@@ -15,3 +15,4 @@ MonoBehaviour:
   <Name>k__BackingField: Weapon
   <Items>k__BackingField:
   - {fileID: 11400000, guid: 8a1b08979045d744387fe792a77791e2, type: 2}
+  <BackgroundSprite>k__BackingField: {fileID: 21300000, guid: 6a2a07ef0f9d4524abd2fb0f6b3f4886, type: 3}

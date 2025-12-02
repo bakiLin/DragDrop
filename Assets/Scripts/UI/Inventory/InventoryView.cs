@@ -20,6 +20,9 @@ public class InventoryView : MonoBehaviour
     [SerializeField]
     private RectTransform _contentPanel;
 
+    [SerializeField]
+    private ItemController[] _equipment;
+
     private List<IItemView> _itemList = new();
 
     private int _currentDraggedItemIndex = -1;
@@ -30,13 +33,18 @@ public class InventoryView : MonoBehaviour
         {
             IItemController item = Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity, _contentPanel);
             _itemList.Add(item as IItemView);
+            SubscribeToItemController(item);
+        }
+    }
 
-            item.OnItemBeginDrag += HandleBeginDrag;
-            item.OnItemEndDrag += HandleItemEndDrag;
-            item.OnItemDropped += HandleSwap;
-            item.OnItemClicked += HandleItemClicked;
-            item.OnPointerEntered += HandlePointerEntered;
-            item.OnPointerExited += HandlePointerExited;
+    public void InitEquipment(Dictionary<int, ItemTypeSO> equipment)
+    {
+        for (int i = 0; i < _equipment.Length; i++)
+        {
+            var equipmentItem = _equipment[i].GetComponent<EquipmentItemView>();
+            equipmentItem.SetBackground(equipment[_itemList.Count].BackgroundSprite);
+            _itemList.Add(_equipment[i]);
+            SubscribeToItemController(_equipment[i]);
         }
     }
 
@@ -73,6 +81,16 @@ public class InventoryView : MonoBehaviour
         _itemList.ForEach(item => item.ResetData());
     }
 
+    private void SubscribeToItemController(IItemController item)
+    {
+        item.OnItemBeginDrag += HandleBeginDrag;
+        item.OnItemEndDrag += HandleItemEndDrag;
+        item.OnItemDropped += HandleSwap;
+        item.OnItemClicked += HandleItemClicked;
+        item.OnPointerEntered += HandlePointerEntered;
+        item.OnPointerExited += HandlePointerExited;
+    }
+
     private void HandleBeginDrag(IItemView item)
     {
         int index = _itemList.IndexOf(item);
@@ -88,6 +106,13 @@ public class InventoryView : MonoBehaviour
 
     private void HandleSwap(IItemView item)
     {
+        //Debug.Log(_itemList[19]);
+        //Debug.Log(_itemList[20]);
+        //foreach (var temp in _itemList)
+        //    Debug.Log()
+
+        Debug.Log(_itemList.IndexOf(item) + " " + _currentDraggedItemIndex);
+        //
         int index = _itemList.IndexOf(item);
         if (index < 0 || _currentDraggedItemIndex < 0) return;
         OnSwapItems?.Invoke(_currentDraggedItemIndex, index);

@@ -17,14 +17,20 @@ public class InventoryController : MonoBehaviour
 
     private void Start()
     {
+        InitData();
         InitUI();
+    }
+
+    private void InitData()
+    {
+        _data.OnInventoryDataChanged += UpdateInventoryUI;
         _data.Init();
     }
 
     private void InitUI()
     {
-        _data.OnInventoryDataChanged += UpdateInventoryUI;
         _view.InitInventory(_data.Size);
+        _view.InitEquipment(_data.GetEquipment());
         _view.OnDescriptionRequested += HandleDescriptionRequested;
         _view.OnStartDragging += HandleDragging;
         _view.OnSwapItems += HandleSwapItems;
@@ -52,9 +58,10 @@ public class InventoryController : MonoBehaviour
         _view.SetPointerFollower(inventoryItem.Item.Sprite);
     }
 
-    private void HandleSwapItems(int index_1, int index_2)
+    private void HandleSwapItems(int i1, int i2)
     {
-        _data.SwapItems(index_1, index_2);
+        //Debug.Log(i1 + " " + i2);
+        _data.SwapItems(i1, i2);
     }
 
     private void HandleClicking(int index)

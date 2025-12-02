@@ -11,11 +11,13 @@ public class InventorySO : ScriptableObject
     [field: SerializeField, Range(1, 20)]
     public int Size { get; private set; }
 
+    public int EquipmentSize => _equippableItemTypes.Length;
+
     [SerializeField, Range(1, 100)]
     private int _maxStackSize;
 
-    //[SerializeField]
-    //private ItemTypeSO[] _equippableItemTypes;
+    [SerializeField]
+    private ItemTypeSO[] _equippableItemTypes;
 
     private List<InventoryItemData> _itemDataList;
 
@@ -23,6 +25,16 @@ public class InventorySO : ScriptableObject
     {
         _itemDataList = Enumerable.Range(0, Size)
             .Select(_ => new InventoryItemData()).ToList();
+
+        _itemDataList.AddRange(_equippableItemTypes
+            .Select(_ => new InventoryItemData(isEquipment: true)));
+    }
+
+    public Dictionary<int, ItemTypeSO> GetEquipment()
+    {
+        return _itemDataList.Select((data, index) => (data, index))
+            .Where(x => x.data.IsEquipment)
+            .ToDictionary(x => x.index, x => _equippableItemTypes[x.index - Size]);
     }
 
     public void AddItem(ItemSO item)
@@ -47,7 +59,7 @@ public class InventorySO : ScriptableObject
     public Dictionary<int, InventoryItemData> GetInventory()
     {
         return _itemDataList.Select((data, index) => (data, index))
-            .Where(x => !x.data.IsEmpty)
+            .Where(x => !x.data.IsEmpty && !x.data.IsEquipment)
             .ToDictionary(x => x.index, x => x.data);
     }
 

@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Size>k__BackingField: 20
   _maxStackSize: 5
+  _equippableItemTypes:
+  - {fileID: 11400000, guid: a8aa9b305d36fd04f943449694406304, type: 2}
