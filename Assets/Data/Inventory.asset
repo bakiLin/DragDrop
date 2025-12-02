@@ -16,3 +16,4 @@ MonoBehaviour:
   _maxStackSize: 5
   _equippableItemTypes:
   - {fileID: 11400000, guid: a8aa9b305d36fd04f943449694406304, type: 2}
+  - {fileID: 11400000, guid: 64257495aa4c07b4e88ed93ef7042d2c, type: 2}

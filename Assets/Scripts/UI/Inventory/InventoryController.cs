@@ -30,7 +30,7 @@ public class InventoryController : MonoBehaviour
     private void InitUI()
     {
         _view.InitInventory(_data.Size);
-        _view.InitEquipment(_data.GetEquipment());
+        _view.InitEquipment(_data.GetEquipmentType());
         _view.OnDescriptionRequested += HandleDescriptionRequested;
         _view.OnStartDragging += HandleDragging;
         _view.OnSwapItems += HandleSwapItems;
@@ -60,7 +60,6 @@ public class InventoryController : MonoBehaviour
 
     private void HandleSwapItems(int i1, int i2)
     {
-        //Debug.Log(i1 + " " + i2);
         _data.SwapItems(i1, i2);
     }
 

@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/ItemTypeSO", fileName = "ItemTypeSO")]
@@ -11,4 +12,6 @@ public class ItemTypeSO : ScriptableObject
 
     [field: SerializeField]
     public Sprite BackgroundSprite { get; private set; }
+
+    public bool IsItemType(ItemSO item) => Items.ToList().Contains(item);
 }

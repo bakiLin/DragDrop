@@ -23,18 +23,15 @@ public class InventorySO : ScriptableObject
 
     public void Init()
     {
-        _itemDataList = Enumerable.Range(0, Size)
-            .Select(_ => new InventoryItemData()).ToList();
-
-        _itemDataList.AddRange(_equippableItemTypes
-            .Select(_ => new InventoryItemData(isEquipment: true)));
+        _itemDataList = Enumerable.Range(0, Size + EquipmentSize)
+            .Select(_ => new InventoryItemData(_ >= Size))
+            .ToList();
     }
 
-    public Dictionary<int, ItemTypeSO> GetEquipment()
+    public Dictionary<int, ItemTypeSO> GetEquipmentType()
     {
-        return _itemDataList.Select((data, index) => (data, index))
-            .Where(x => x.data.IsEquipment)
-            .ToDictionary(x => x.index, x => _equippableItemTypes[x.index - Size]);
+        return Enumerable.Range(Size, EquipmentSize)
+            .ToDictionary(i => i, i => _equippableItemTypes[i - Size]);    
     }
 
     public void AddItem(ItemSO item)
@@ -59,13 +56,30 @@ public class InventorySO : ScriptableObject
     public Dictionary<int, InventoryItemData> GetInventory()
     {
         return _itemDataList.Select((data, index) => (data, index))
-            .Where(x => !x.data.IsEmpty && !x.data.IsEquipment)
+            .Where(x => !x.data.IsEmpty)
             .ToDictionary(x => x.index, x => x.data);
     }
 
     public void SwapItems(int i1, int i2)
     {
-        (_itemDataList[i1], _itemDataList[i2]) = (_itemDataList[i2], _itemDataList[i1]);
+        var (d1, d2) = (_itemDataList[i1], _itemDataList[i2]);
+
+        if (d2.IsEquipment && _equippableItemTypes[i2 - Size].IsItemType(d1.Item))
+        {
+            (_itemDataList[i1], _itemDataList[i2]) = (
+                new InventoryItemData(d2.Item, d2.Count),
+                new InventoryItemData(d1.Item, d1.Count, true));
+        }
+        else if (d1.IsEquipment && (_itemDataList[i2].Item == null 
+            || _equippableItemTypes[i1 - Size].IsItemType(d2.Item)))
+        {
+            (_itemDataList[i1], _itemDataList[i2]) = (
+                new InventoryItemData(d2.Item, d2.Count, true),
+                new InventoryItemData(d1.Item, d1.Count));
+        }
+        else if (!d1.IsEquipment && !d2.IsEquipment)
+            (_itemDataList[i1], _itemDataList[i2]) = (d2, d1);
+
         OnInventoryDataChanged?.Invoke();
     }
 
@@ -84,12 +98,11 @@ public class InventorySO : ScriptableObject
     {
         int index = _itemDataList.FindIndex(
             x => !x.IsEmpty && x.Item.Id == item.Id && _maxStackSize - x.Count > 0);
+
         if (index >= 0)
-        {
             _itemDataList[index] = new InventoryItemData(_itemDataList[index].Item,
                 _itemDataList[index].Count + 1);
-            return;
-        }
-        AddItemToFirstFreeSlot(item);
+        else
+            AddItemToFirstFreeSlot(item);
     }
 }

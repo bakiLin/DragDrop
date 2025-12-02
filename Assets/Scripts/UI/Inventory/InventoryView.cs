@@ -106,13 +106,6 @@ public class InventoryView : MonoBehaviour
 
     private void HandleSwap(IItemView item)
     {
-        //Debug.Log(_itemList[19]);
-        //Debug.Log(_itemList[20]);
-        //foreach (var temp in _itemList)
-        //    Debug.Log()
-
-        Debug.Log(_itemList.IndexOf(item) + " " + _currentDraggedItemIndex);
-        //
         int index = _itemList.IndexOf(item);
         if (index < 0 || _currentDraggedItemIndex < 0) return;
         OnSwapItems?.Invoke(_currentDraggedItemIndex, index);
