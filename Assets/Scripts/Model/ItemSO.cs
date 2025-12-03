@@ -7,7 +7,7 @@ public abstract class ItemSO : ScriptableObject
     [field: SerializeField]
     public string Name { get; set; }
 
-    [field: SerializeField, TextArea]
+    [field: SerializeField]
     public string Description { get; set; }
 
     [field: SerializeField]

@@ -83,6 +83,13 @@ public class InventorySO : ScriptableObject
         OnInventoryDataChanged?.Invoke();
     }
 
+    public void EquipItem(int index)
+    {
+        var item = _itemDataList[index].Item;
+        int i = Array.FindIndex(_equippableItemTypes, _ => _.IsItemType(item));
+        SwapItems(index, Size + i);
+    }
+
     public InventoryItemData GetItemAt(int index)
     {
         return _itemDataList[index];
