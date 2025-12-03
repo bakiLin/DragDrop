@@ -15,4 +15,5 @@ MonoBehaviour:
   <Name>k__BackingField: Armor
   <Items>k__BackingField:
   - {fileID: 11400000, guid: 5cae8b0af33d0cd4f836ce3b4f04ac2c, type: 2}
+  - {fileID: 11400000, guid: 7dd35409ad1553c4990c62c6023ef86e, type: 2}
   <BackgroundSprite>k__BackingField: {fileID: 21300000, guid: 8599c5b872000af449295ad9d789a75c, type: 3}

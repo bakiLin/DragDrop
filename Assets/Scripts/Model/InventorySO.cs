@@ -62,23 +62,24 @@ public class InventorySO : ScriptableObject
 
     public void SwapItems(int i1, int i2)
     {
-        var (d1, d2) = (_itemDataList[i1], _itemDataList[i2]);
+        var (data_1, data_2) = (_itemDataList[i1], _itemDataList[i2]);
 
-        if (d2.IsEquipment && _equippableItemTypes[i2 - Size].IsItemType(d1.Item))
+        if (data_2.IsEquipment && _equippableItemTypes[i2 - Size].IsItemType(data_1.Item))
+            SwapEquipment(i1, i2, data_1, data_2, false, true);
+        else if (data_1.IsEquipment)
         {
-            (_itemDataList[i1], _itemDataList[i2]) = (
-                new InventoryItemData(d2.Item, d2.Count),
-                new InventoryItemData(d1.Item, d1.Count, true));
+            if (data_2.IsEquipment)
+            {
+                if (_equippableItemTypes[i1 - Size].IsItemType(data_2.Item)
+                && _equippableItemTypes[i2 - Size].IsItemType(data_1.Item))
+                    SwapEquipment(i1, i2, data_1, data_2, true, true);
+            }
+            else if (_itemDataList[i2].Item == null
+                || _equippableItemTypes[i1 - Size].IsItemType(data_2.Item))
+                SwapEquipment(i1, i2, data_1, data_2, true, false);
         }
-        else if (d1.IsEquipment && (_itemDataList[i2].Item == null 
-            || _equippableItemTypes[i1 - Size].IsItemType(d2.Item)))
-        {
-            (_itemDataList[i1], _itemDataList[i2]) = (
-                new InventoryItemData(d2.Item, d2.Count, true),
-                new InventoryItemData(d1.Item, d1.Count));
-        }
-        else if (!d1.IsEquipment && !d2.IsEquipment)
-            (_itemDataList[i1], _itemDataList[i2]) = (d2, d1);
+        else if (!data_1.IsEquipment && !data_2.IsEquipment)
+            (_itemDataList[i1], _itemDataList[i2]) = (data_2, data_1);
 
         OnInventoryDataChanged?.Invoke();
     }
@@ -93,6 +94,13 @@ public class InventorySO : ScriptableObject
     public InventoryItemData GetItemAt(int index)
     {
         return _itemDataList[index];
+    }
+
+    private void SwapEquipment(int i1, int i2, InventoryItemData d1, InventoryItemData d2, 
+        bool isEquipment_1, bool isEquipment_2)
+    {
+        _itemDataList[i1] = new InventoryItemData(d2.Item, d2.Count, isEquipment_1);
+        _itemDataList[i2] = new InventoryItemData(d1.Item, d1.Count, isEquipment_2);
     }
 
     private void AddItemToFirstFreeSlot(ItemSO item)

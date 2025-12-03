@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76227d652daaeb84fb883c83bfe35e1e, type: 3}
-  m_Name: Leather Armor
+  m_Name: Metal Armor
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Leather
-  <Description>k__BackingField: Leather armor
-  <Sprite>k__BackingField: {fileID: -386399267, guid: 748d1cd95bd2af547a5cfd56e657f73c, type: 3}
+  <Name>k__BackingField: metal
+  <Description>k__BackingField: metal armor
+  <Sprite>k__BackingField: {fileID: -553849834, guid: 748d1cd95bd2af547a5cfd56e657f73c, type: 3}
   <IsStackable>k__BackingField: 0
