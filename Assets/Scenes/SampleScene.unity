@@ -2387,7 +2387,10 @@ MonoBehaviour:
   _itemPrefab: {fileID: 2893784264177240206, guid: 8e932ad1cbd23d048b3ded940862c159, type: 3}
   _tooltip: {fileID: 2012495821}
   _pointerFollower: {fileID: 1369994424}
+  _itemDropController: {fileID: 1923364694}
   _contentPanel: {fileID: 1626834555}
+  _dropItemButton: {fileID: 1248246384}
+  _confirmDropButton: {fileID: 1323205942}
   _equipment:
   - {fileID: 7635285475757767142}
   - {fileID: 1904314969}
@@ -3252,6 +3255,7 @@ Transform:
   m_Children:
   - {fileID: 733245864}
   - {fileID: 530199325}
+  - {fileID: 1923364693}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1904314966
@@ -3776,6 +3780,53 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3395720b13d19164cb319589dcf58870, type: 3}
+--- !u!1 &1923364692
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1923364693}
+  - component: {fileID: 1923364694}
+  m_Layer: 0
+  m_Name: Item Drop Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1923364693
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923364692}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1884112810}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1923364694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923364692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94793ef51fe3c7743ae944ba40b67b21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dropWindow: {fileID: 667832327}
+  _slider: {fileID: 945367900}
+  _dropCountText: {fileID: 464686219}
 --- !u!1 &1933547684
 GameObject:
   m_ObjectHideFlags: 0
@@ -4225,10 +4276,6 @@ PrefabInstance:
     - target: {fileID: 8015162669653006612, guid: 8bff2cbf7ae15c7499722b6212d0bdb8, type: 3}
       propertyPath: m_Name
       value: Equipment 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8015162669653006612, guid: 8bff2cbf7ae15c7499722b6212d0bdb8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8670424769980361742, guid: 8bff2cbf7ae15c7499722b6212d0bdb8, type: 3}
       propertyPath: m_Pivot.x

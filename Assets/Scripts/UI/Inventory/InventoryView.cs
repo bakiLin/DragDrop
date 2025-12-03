@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryView : MonoBehaviour
 {
-    public event Action<int> OnDescriptionRequested, OnStartDragging, OnClicked;
+    public event Action<int> OnDescriptionRequested, OnStartDragging, OnClicked, OnDropRequested;
 
-    public event Action<int, int> OnSwapItems;
+    public event Action<int, int> OnSwapItems, OnMultipleItemDrop;
 
     [SerializeField] 
     private ItemController _itemPrefab;
@@ -18,7 +19,16 @@ public class InventoryView : MonoBehaviour
     private PointerFollower _pointerFollower;
 
     [SerializeField]
+    private ItemDropController _itemDropController;
+
+    [SerializeField]
     private RectTransform _contentPanel;
+
+    [SerializeField]
+    private Button _dropItemButton;
+
+    [SerializeField]
+    private Button _confirmDropButton;
 
     [SerializeField]
     private ItemController[] _equipment;
@@ -26,6 +36,23 @@ public class InventoryView : MonoBehaviour
     private List<IItemView> _itemList = new();
 
     private int _currentDraggedItemIndex = -1;
+
+    private int _selectedItemIndex = -1;
+
+    private void Start()
+    {
+        _dropItemButton.onClick.AddListener(
+            delegate { 
+                if (_selectedItemIndex >= 0)
+                    OnDropRequested?.Invoke(_selectedItemIndex); 
+            });
+
+        _confirmDropButton.onClick.AddListener(
+            delegate {
+                OnMultipleItemDrop?.Invoke(_selectedItemIndex, _itemDropController.SliderValue);
+                _itemDropController.Disable();
+            });
+    }
 
     public void InitInventory(int inventorySize)
     {
@@ -46,6 +73,11 @@ public class InventoryView : MonoBehaviour
             _itemList.Add(_equipment[i]);
             SubscribeToItemController(_equipment[i]);
         }
+    }
+
+    public void SetDropWindow(int stackSize)
+    {
+        _itemDropController.SetSlider(stackSize);
     }
 
     public void UpdateItemData(int index, Sprite sprite, int count)
@@ -74,6 +106,7 @@ public class InventoryView : MonoBehaviour
     {
         DeselectAllItems();
         _itemList[index].ToggleItem(true);
+        _selectedItemIndex = index;
     }
 
     public void ResetAllItems()

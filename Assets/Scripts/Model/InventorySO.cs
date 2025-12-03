@@ -41,14 +41,14 @@ public class InventorySO : ScriptableObject
         OnInventoryDataChanged?.Invoke();
     }
 
-    public void RemoveItem(int index)
+    public void RemoveItem(int index, int itemRemoveNumber = 1)
     {
         if (index >= _itemDataList.Count || _itemDataList[index].IsEmpty)
             return;
 
         var item = _itemDataList[index];
-        _itemDataList[index] = item.Count > 1
-            ? new InventoryItemData(item.Item, item.Count - 1)
+        _itemDataList[index] = item.Count - itemRemoveNumber > 0
+            ? new InventoryItemData(item.Item, item.Count - itemRemoveNumber)
             : new InventoryItemData();
         OnInventoryDataChanged?.Invoke();
     }

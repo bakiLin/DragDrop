@@ -35,6 +35,8 @@ public class InventoryController : MonoBehaviour
         _view.OnStartDragging += HandleDragging;
         _view.OnSwapItems += HandleSwapItems;
         _view.OnClicked += HandleClicking;
+        _view.OnDropRequested += HandleItemDropping;
+        _view.OnMultipleItemDrop += HandleMultipleItemDropping;
     }
 
     private void UpdateInventoryUI()
@@ -82,5 +84,17 @@ public class InventoryController : MonoBehaviour
 
         IEquippable equippableItem = inventoryItem.Item as IEquippable;
         if (equippableItem != null) _data.EquipItem(index);
+    }
+
+    private void HandleItemDropping(int index)
+    {
+        var count = _data.GetItemAt(index).Count;
+        if (count > 1) _view.SetDropWindow(count);
+        else _data.RemoveItem(index);
+    }
+
+    private void HandleMultipleItemDropping(int index, int itemDropNum)
+    {
+        _data.RemoveItem(index, itemDropNum);
     }
 }
