@@ -8,13 +8,13 @@ public class ItemTypeSO : ScriptableObject
     public string Name { get; private set; }
 
     [field: SerializeField]
-    public ItemSO[] Items { get; private set; }
-
-    [field: SerializeField]
     public Sprite BackgroundSprite { get; private set; }
 
     [field: SerializeField]
     public bool IsEquippable { get; private set; }
+
+    [field: SerializeField]
+    public ItemSO[] Items { get; private set; }
 
     public bool IsItemType(ItemSO item) => Items.ToList().Contains(item);
 }

@@ -31,4 +31,11 @@ public struct InventoryItemData
         Count = count;
         IsEquipment = isEquipment;
     }
+
+    public InventoryItemData(InventoryItemData data)
+    {
+        Item = data.Item;
+        Count = data.Count;
+        IsEquipment = data.IsEquipment;
+    }
 }

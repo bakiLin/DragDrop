@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
@@ -38,6 +39,7 @@ public class InventoryController : MonoBehaviour
         _view.OnClicked += HandleClicking;
         _view.OnDropRequested += HandleItemDropping;
         _view.OnMultipleItemDrop += HandleMultipleItemDropping;
+        _view.OnSortRequested += HandleSorting;
     }
 
     private void UpdateInventoryUI()
@@ -46,14 +48,6 @@ public class InventoryController : MonoBehaviour
         foreach (var item in _data.GetInventory())
             _view.UpdateItemData(item.Key, item.Value.Item.Sprite, item.Value.Count);
     }
-
-    //private void Sort()
-    //{
-    //    var data = _data.GetInventory();
-    //    Dictionary<int, InventoryItemData> copy = new();
-
-
-    //}
 
     private void HandleDescriptionRequested(int index)
     {
@@ -105,5 +99,24 @@ public class InventoryController : MonoBehaviour
     private void HandleMultipleItemDropping(int index, int itemDropNum)
     {
         _data.RemoveItem(index, itemDropNum);
+    }
+
+    private void HandleSorting()
+    {
+        List<ItemSO> items = _data.ItemTypes
+            .SelectMany(_ => _.Items)
+            .ToList();
+
+        List<InventoryItemData> newData = new();
+        foreach (var item in items)
+        {
+            newData.AddRange(_data.GetInventory().Values
+                .Where(_ => _.Item == item && !_.IsEquipment));
+        }
+
+        while (newData.Count < _data.Size)
+            newData.Add(new InventoryItemData());
+
+        _data.SetInventory(newData);
     }
 }

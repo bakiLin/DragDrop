@@ -52,8 +52,8 @@ public class InventorySO : ScriptableObject
 
         var item = _itemDataList[index];
         _itemDataList[index] = item.Count - itemRemoveNumber > 0
-            ? new InventoryItemData(item.Item, item.Count - itemRemoveNumber)
-            : new InventoryItemData();
+            ? new InventoryItemData(item.Item, item.Count - itemRemoveNumber, item.IsEquipment)
+            : new InventoryItemData(item.IsEquipment);
         OnInventoryDataChanged?.Invoke();
     }
 
@@ -62,6 +62,13 @@ public class InventorySO : ScriptableObject
         return _itemDataList.Select((data, index) => (data, index))
             .Where(x => !x.data.IsEmpty)
             .ToDictionary(x => x.index, x => x.data);
+    }
+
+    public void SetInventory(List<InventoryItemData> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+            _itemDataList[i] = new InventoryItemData(list[i]);
+        OnInventoryDataChanged?.Invoke();
     }
 
     public void SwapItems(int i1, int i2)
@@ -109,7 +116,7 @@ public class InventorySO : ScriptableObject
 
     private void AddItemToFirstFreeSlot(ItemSO item)
     {
-        int index = _itemDataList.FindIndex(x => x.IsEmpty);
+        int index = _itemDataList.FindIndex(x => x.IsEmpty && !x.IsEquipment);
         if (index >= 0) _itemDataList[index] = new InventoryItemData(item, 1);
     }
 

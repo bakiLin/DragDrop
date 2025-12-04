@@ -9,6 +9,8 @@ public class InventoryView : MonoBehaviour
 
     public event Action<int, int> OnSwapItems, OnMultipleItemDrop;
 
+    public event Action OnSortRequested;
+
     [SerializeField] 
     private ItemController _itemPrefab;
 
@@ -31,6 +33,9 @@ public class InventoryView : MonoBehaviour
     private Button _confirmDropButton;
 
     [SerializeField]
+    private Button _sortButton;
+
+    [SerializeField]
     private ItemController[] _equipment;
 
     private List<IItemView> _itemList = new();
@@ -51,6 +56,11 @@ public class InventoryView : MonoBehaviour
             delegate {
                 OnMultipleItemDrop?.Invoke(_selectedItemIndex, _itemDropView.SliderValue);
                 _itemDropView.Disable();
+            });
+
+        _sortButton.onClick.AddListener(
+            delegate {
+                OnSortRequested?.Invoke();
             });
     }
 
