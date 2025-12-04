@@ -53,7 +53,7 @@ public class InventoryController : MonoBehaviour
     {
         InventoryItemData inventoryItem = _data.GetItemAt(index);
         if (inventoryItem.IsEmpty) return;
-        _view.UpdateTooltip(inventoryItem.Item.Description);
+        _view.UpdateTooltip(index, inventoryItem.Item.Description);
     }
 
     private void HandleDragging(int index)

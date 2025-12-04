@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca515672de1990e429cbffd02d98bda5, type: 3}
   m_Name: Inventory
   m_EditorClassIdentifier: 
-  <Size>k__BackingField: 20
+  <Size>k__BackingField: 5
   _maxStackSize: 5
   <ItemTypes>k__BackingField:
   - {fileID: 11400000, guid: a8aa9b305d36fd04f943449694406304, type: 2}

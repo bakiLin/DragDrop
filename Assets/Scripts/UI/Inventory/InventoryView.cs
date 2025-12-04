@@ -11,6 +11,8 @@ public class InventoryView : MonoBehaviour
 
     public event Action OnSortRequested;
 
+    public List<IItemView> ItemList { get; } = new();
+
     [SerializeField] 
     private ItemController _itemPrefab;
 
@@ -37,8 +39,6 @@ public class InventoryView : MonoBehaviour
 
     [SerializeField]
     private ItemController[] _equipment;
-
-    private List<IItemView> _itemList = new();
 
     private int _currentDraggedItemIndex = -1;
 
@@ -69,7 +69,7 @@ public class InventoryView : MonoBehaviour
         for (int i = 0; i < inventorySize; i++)
         {
             IItemController item = Instantiate(_itemPrefab, Vector3.zero, Quaternion.identity, _contentPanel);
-            _itemList.Add(item as IItemView);
+            ItemList.Add(item as IItemView);
             SubscribeToItemController(item);
         }
     }
@@ -79,8 +79,8 @@ public class InventoryView : MonoBehaviour
         for (int i = 0; i < _equipment.Length; i++)
         {
             var equipmentItem = _equipment[i].GetComponent<EquipmentItemView>();
-            equipmentItem.SetBackground(equipment[_itemList.Count].BackgroundSprite);
-            _itemList.Add(_equipment[i]);
+            equipmentItem.SetBackground(equipment[ItemList.Count].BackgroundSprite);
+            ItemList.Add(_equipment[i]);
             SubscribeToItemController(_equipment[i]);
         }
     }
@@ -92,8 +92,8 @@ public class InventoryView : MonoBehaviour
 
     public void UpdateItemData(int index, Sprite sprite, int count)
     {
-        if (_itemList.Count > index)
-            _itemList[index].SetData(sprite, count);
+        if (ItemList.Count > index)
+            ItemList[index].SetData(sprite, count);
     }
 
     public void SetPointerFollower(Sprite sprite)
@@ -102,26 +102,26 @@ public class InventoryView : MonoBehaviour
         _pointerFollower.Toggle(true);
     }
 
-    public void UpdateTooltip(string description)
+    public void UpdateTooltip(int index, string description)
     {
-        _tooltip.SetTooltipData(description);
+        _tooltip.SetTooltipData(description, (ItemList[index] as IItemController).Position);
     }
 
     public void DeselectAllItems()
     {
-        _itemList.ForEach(item => item.ToggleItem(false));
+        ItemList.ForEach(item => item.ToggleItem(false));
     }
 
     public void SelectItem(int index)
     {
         DeselectAllItems();
-        _itemList[index].ToggleItem(true);
+        ItemList[index].ToggleItem(true);
         _selectedItemIndex = index;
     }
 
     public void ResetAllItems()
     {
-        _itemList.ForEach(item => item.ResetData());
+        ItemList.ForEach(item => item.ResetData());
     }
 
     private void SubscribeToItemController(IItemController item)
@@ -136,7 +136,7 @@ public class InventoryView : MonoBehaviour
 
     private void HandleBeginDrag(IItemView item)
     {
-        int index = _itemList.IndexOf(item);
+        int index = ItemList.IndexOf(item);
         _currentDraggedItemIndex = index;
         OnStartDragging?.Invoke(index);
     }
@@ -149,21 +149,21 @@ public class InventoryView : MonoBehaviour
 
     private void HandleSwap(IItemView item)
     {
-        int index = _itemList.IndexOf(item);
+        int index = ItemList.IndexOf(item);
         if (index < 0 || _currentDraggedItemIndex < 0) return;
         OnSwapItems?.Invoke(_currentDraggedItemIndex, index);
     }
 
     private void HandleItemClicked(IItemView item)
     {
-        int index = _itemList.IndexOf(item);
+        int index = ItemList.IndexOf(item);
         SelectItem(index);
         OnClicked?.Invoke(index);
     }
 
     private void HandlePointerEntered(IItemView item)
     {
-        int index = _itemList.IndexOf(item);
+        int index = ItemList.IndexOf(item);
         OnDescriptionRequested?.Invoke(index);
     }
 

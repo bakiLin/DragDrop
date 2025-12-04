@@ -8,10 +8,19 @@ public class ItemController : MonoBehaviour, IItemController, IItemView, IBeginD
     public event Action<IItemView> OnItemBeginDrag, OnItemEndDrag, OnItemDropped, 
         OnItemClicked, OnPointerEntered, OnPointerExited;
 
+    public Vector2 Position => _rectTransform.position;
+
     [SerializeField]
     private ItemView _itemView;
 
     private bool _isEmpty = true;
+
+    private RectTransform _rectTransform;
+
+    private void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
+    }
 
     public void ResetData()
     {
