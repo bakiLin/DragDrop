@@ -19,7 +19,7 @@ public class InventoryView : MonoBehaviour
     private PointerFollower _pointerFollower;
 
     [SerializeField]
-    private ItemDropController _itemDropController;
+    private ItemDropView _itemDropView;
 
     [SerializeField]
     private RectTransform _contentPanel;
@@ -49,8 +49,8 @@ public class InventoryView : MonoBehaviour
 
         _confirmDropButton.onClick.AddListener(
             delegate {
-                OnMultipleItemDrop?.Invoke(_selectedItemIndex, _itemDropController.SliderValue);
-                _itemDropController.Disable();
+                OnMultipleItemDrop?.Invoke(_selectedItemIndex, _itemDropView.SliderValue);
+                _itemDropView.Disable();
             });
     }
 
@@ -77,7 +77,7 @@ public class InventoryView : MonoBehaviour
 
     public void SetDropWindow(int stackSize)
     {
-        _itemDropController.SetSlider(stackSize);
+        _itemDropView.SetSlider(stackSize);
     }
 
     public void UpdateItemData(int index, Sprite sprite, int count)
