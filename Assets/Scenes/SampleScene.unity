@@ -4076,7 +4076,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tooltipText: {fileID: 405406332}
-  _offset: {x: 50, y: 100}
+  _offset: {x: 175, y: 75}
 --- !u!1 &2069819120
 GameObject:
   m_ObjectHideFlags: 0
