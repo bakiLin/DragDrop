@@ -11,18 +11,22 @@ public class InventorySO : ScriptableObject
     [field: SerializeField, Range(1, 20)]
     public int Size { get; private set; }
 
-    public int EquipmentSize => _equippableItemTypes.Length;
-
     [SerializeField, Range(1, 100)]
     private int _maxStackSize;
 
-    [SerializeField]
+    [field: SerializeField]
+    public ItemTypeSO[] ItemTypes { get; private set; }
+
+    public int EquipmentSize => _equippableItemTypes.Length;
+
     private ItemTypeSO[] _equippableItemTypes;
 
     private List<InventoryItemData> _itemDataList;
 
     public void Init()
     {
+        _equippableItemTypes = ItemTypes.Where(_ => _.IsEquippable).ToArray();
+
         _itemDataList = Enumerable.Range(0, Size + EquipmentSize)
             .Select(_ => new InventoryItemData(_ >= Size))
             .ToList();

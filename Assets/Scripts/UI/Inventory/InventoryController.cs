@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
@@ -45,6 +46,14 @@ public class InventoryController : MonoBehaviour
         foreach (var item in _data.GetInventory())
             _view.UpdateItemData(item.Key, item.Value.Item.Sprite, item.Value.Count);
     }
+
+    //private void Sort()
+    //{
+    //    var data = _data.GetInventory();
+    //    Dictionary<int, InventoryItemData> copy = new();
+
+
+    //}
 
     private void HandleDescriptionRequested(int index)
     {

@@ -969,7 +969,6 @@ GameObject:
   - component: {fileID: 667832327}
   - component: {fileID: 667832329}
   - component: {fileID: 667832328}
-  - component: {fileID: 667832331}
   - component: {fileID: 667832330}
   m_Layer: 5
   m_Name: Drop Window
@@ -977,7 +976,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &667832327
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1050,18 +1049,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slider: {fileID: 945367900}
   _dropCountText: {fileID: 464686219}
---- !u!225 &667832331
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 667832326}
-  m_Enabled: 1
-  m_Alpha: 0
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!1 &705604932
 GameObject:
   m_ObjectHideFlags: 0
@@ -2097,7 +2084,7 @@ RectTransform:
   m_Father: {fileID: 1324039111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 70, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3960,7 +3947,7 @@ RectTransform:
   m_Father: {fileID: 380345648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

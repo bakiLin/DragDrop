@@ -12,12 +12,8 @@ public class ItemDropView : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _dropCountText;
 
-    private CanvasGroup _canvasGroup;
-
-    private void Awake()
+    private void Start()
     {
-        _canvasGroup = GetComponent<CanvasGroup>();
-
         _slider.onValueChanged.AddListener(
             delegate {
                 _dropCountText.text = _slider.value.ToString();
@@ -28,18 +24,11 @@ public class ItemDropView : MonoBehaviour
     {
         _slider.value = 0;
         _slider.maxValue = stackSize;
-        ToggleVisibility(true);
+        gameObject.SetActive(true);
     }
 
     public void Disable()
     {
-        ToggleVisibility(false);
-    }
-
-    private void ToggleVisibility(bool isActive)
-    {
-        _canvasGroup.alpha = isActive ? 1f : 0f;
-        _canvasGroup.interactable = isActive;
-        _canvasGroup.blocksRaycasts = isActive;
+        gameObject.SetActive(false);
     }
 }

@@ -9,8 +9,7 @@ public class DropdownController : MonoBehaviour
     [SerializeField]
     private DropdownView _presenter;
 
-    [SerializeField]
-    private ItemTypeSO[] _itemTypes;
+    private ItemTypeSO[] _itemTypes => _inventoryData.ItemTypes;
 
     private void Start()
     {

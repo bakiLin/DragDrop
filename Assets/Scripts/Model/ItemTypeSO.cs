@@ -13,5 +13,8 @@ public class ItemTypeSO : ScriptableObject
     [field: SerializeField]
     public Sprite BackgroundSprite { get; private set; }
 
+    [field: SerializeField]
+    public bool IsEquippable { get; private set; }
+
     public bool IsItemType(ItemSO item) => Items.ToList().Contains(item);
 }
