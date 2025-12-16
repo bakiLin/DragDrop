@@ -11,8 +11,8 @@ public class InventorySO : ScriptableObject
     [field: SerializeField, Range(1, 20)]
     public int Size { get; private set; }
 
-    [SerializeField, Range(1, 100)]
-    private int _maxStackSize;
+    [field: SerializeField, Range(1, 100)]
+    public int MaxStackSize { get; private set; }
 
     [field: SerializeField]
     public ItemTypeSO[] ItemTypes { get; private set; }
@@ -40,19 +40,19 @@ public class InventorySO : ScriptableObject
 
     public void AddItem(ItemSO item)
     {
-        (item.IsStackable 
-            ? (Action<ItemSO>)AddStackableItem : AddItemToFirstFreeSlot)(item);
+        if (item.IsStackable) AddStackableItem(item);
+        else AddItemToFirstFreeSlot(item);
         OnInventoryDataChanged?.Invoke();
     }
 
-    public void RemoveItem(int index, int itemRemoveNumber = 1)
+    public void RemoveItem(int index, int removeNumber = 1)
     {
         if (index >= _itemDataList.Count || _itemDataList[index].IsEmpty)
             return;
 
         var item = _itemDataList[index];
-        _itemDataList[index] = item.Count - itemRemoveNumber > 0
-            ? new InventoryItemData(item.Item, item.Count - itemRemoveNumber, item.IsEquipment)
+        _itemDataList[index] = item.Count - removeNumber > 0
+            ? new InventoryItemData(item.Item, item.Count - removeNumber, item.IsEquipment)
             : new InventoryItemData(isEquipment: item.IsEquipment);
         OnInventoryDataChanged?.Invoke();
     }
@@ -102,10 +102,7 @@ public class InventorySO : ScriptableObject
         SwapItems(index, Size + i);
     }
 
-    public InventoryItemData GetItemAt(int index)
-    {
-        return _itemDataList[index];
-    }
+    public InventoryItemData GetItemAt(int index) => _itemDataList[index];
 
     private void SwapEquipment(int i1, int i2, InventoryItemData d1, InventoryItemData d2, 
         bool isEquipment_1, bool isEquipment_2)
@@ -123,7 +120,7 @@ public class InventorySO : ScriptableObject
     private void AddStackableItem(ItemSO item)
     {
         int index = _itemDataList.FindIndex(
-            x => !x.IsEmpty && x.Item.Id == item.Id && _maxStackSize - x.Count > 0);
+            _ => !_.IsEmpty && _.Item.Id == item.Id && MaxStackSize - _.Count > 0);
 
         if (index >= 0)
             _itemDataList[index] = new InventoryItemData(_itemDataList[index].Item,
