@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: Potion Type
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Potion
+  <BackgroundSprite>k__BackingField: {fileID: 0}
+  <IsEquippable>k__BackingField: 0
   <Items>k__BackingField:
   - {fileID: 11400000, guid: f91b4699bf7716e42beb170b909a3cc1, type: 2}
+  - {fileID: 11400000, guid: 1a3fcbbde89983449b0cf207fed7edb8, type: 2}

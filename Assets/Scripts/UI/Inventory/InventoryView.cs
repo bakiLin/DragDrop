@@ -79,7 +79,7 @@ public class InventoryView : MonoBehaviour
         for (int i = 0; i < _equipment.Length; i++)
         {
             var equipmentItem = _equipment[i].GetComponent<EquipmentItemView>();
-            equipmentItem.SetBackground(equipment[ItemList.Count].BackgroundSprite);
+            equipmentItem.SetBackground(equipment[ItemList.Count].EquipmentSprite);
             ItemList.Add(_equipment[i]);
             SubscribeToItemController(_equipment[i]);
         }

@@ -28,7 +28,7 @@ public class InventorySO : ScriptableObject
         _equippableItemTypes = ItemTypes.Where(_ => _.IsEquippable).ToArray();
 
         _itemDataList = Enumerable.Range(0, Size + EquipmentSize)
-            .Select(_ => new InventoryItemData(_ >= Size))
+            .Select(_ => new InventoryItemData(isEquipment: _ >= Size))
             .ToList();
     }
 
@@ -53,7 +53,7 @@ public class InventorySO : ScriptableObject
         var item = _itemDataList[index];
         _itemDataList[index] = item.Count - itemRemoveNumber > 0
             ? new InventoryItemData(item.Item, item.Count - itemRemoveNumber, item.IsEquipment)
-            : new InventoryItemData(item.IsEquipment);
+            : new InventoryItemData(isEquipment: item.IsEquipment);
         OnInventoryDataChanged?.Invoke();
     }
 

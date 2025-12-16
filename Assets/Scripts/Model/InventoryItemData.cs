@@ -11,21 +11,7 @@ public struct InventoryItemData
 
     public bool IsEmpty => Item == null;
 
-    public InventoryItemData(ItemSO item, int count)
-    {
-        Item = item;
-        Count = count;
-        IsEquipment = false;
-    }
-
-    public InventoryItemData(bool isEquipment)
-    {
-        Item = null;
-        Count = 0;
-        IsEquipment = isEquipment;
-    }
-
-    public InventoryItemData(ItemSO item, int count, bool isEquipment)
+    public InventoryItemData(ItemSO item = null, int count = 0, bool isEquipment = false)
     {
         Item = item;
         Count = count;

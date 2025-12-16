@@ -8,7 +8,7 @@ public class ItemTypeSO : ScriptableObject
     public string Name { get; private set; }
 
     [field: SerializeField]
-    public Sprite BackgroundSprite { get; private set; }
+    public Sprite EquipmentSprite { get; private set; }
 
     [field: SerializeField]
     public bool IsEquippable { get; private set; }

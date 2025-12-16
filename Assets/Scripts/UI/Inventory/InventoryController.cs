@@ -82,11 +82,8 @@ public class InventoryController : MonoBehaviour
         InventoryItemData inventoryItem = _data.GetItemAt(index);
         if (inventoryItem.IsEmpty) return;
 
-        IEdible edibleItem = inventoryItem.Item as IEdible;
-        if (edibleItem != null) _data.RemoveItem(index);
-
-        IEquippable equippableItem = inventoryItem.Item as IEquippable;
-        if (equippableItem != null) _data.EquipItem(index);
+        ItemSO item = inventoryItem.Item;
+        if (item != null) item.Interact(_data, index);
     }
 
     private void HandleItemDropping(int index)
