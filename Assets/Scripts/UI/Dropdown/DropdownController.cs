@@ -7,20 +7,20 @@ public class DropdownController : MonoBehaviour
     private InventorySO _inventoryData;
 
     [SerializeField]
-    private DropdownView _presenter;
+    private DropdownView _view;
 
     private ItemTypeSO[] _itemTypes => _inventoryData.ItemTypes;
 
     private void Start()
     {
-        _presenter.Init(_itemTypes.Select(x => x.Name).ToArray());
-        _presenter.OnValueChanged += FillItemDropDown;
-        _presenter.OnButtonClicked += CreateDropdownItem;
+        _view.Init(_itemTypes.Select(x => x.Name).ToArray());
+        _view.OnValueChanged += FillItemDropDown;
+        _view.OnButtonClicked += CreateDropdownItem;
     }
 
     private void FillItemDropDown(int index)
     {
-        _presenter.FillItemDropdown(
+        _view.FillItemDropdown(
             _itemTypes[index].Items.Select(x => x.Name).ToArray());
     }
 

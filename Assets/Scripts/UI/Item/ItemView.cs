@@ -9,12 +9,12 @@ public abstract class ItemView : MonoBehaviour, IItemView
     [SerializeField]
     protected Image _selectionImage;
 
+    public virtual void SetData(Sprite sprite, int count) { }
+
     public virtual void ResetData()
     {
         _itemImage.gameObject.SetActive(false);
     }
-
-    public virtual void SetData(Sprite sprite, int count) { }
 
     public virtual void ToggleItem(bool isActive)
     {
