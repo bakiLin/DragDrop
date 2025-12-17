@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class InventoryView : MonoBehaviour
 {
@@ -13,16 +14,16 @@ public class InventoryView : MonoBehaviour
 
     public List<IItemView> ItemList { get; } = new();
 
-    [SerializeField] 
+    [Inject] 
     private ItemController _itemPrefab;
 
-    [SerializeField] 
+    [Inject] 
     private Tooltip _tooltip;
 
-    [SerializeField] 
+    [Inject] 
     private PointerFollower _pointerFollower;
 
-    [SerializeField]
+    [Inject]
     private ItemDropView _itemDropView;
 
     [SerializeField]

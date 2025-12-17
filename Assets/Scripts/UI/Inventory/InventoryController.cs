@@ -1,13 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using VContainer;
 
 public class InventoryController : MonoBehaviour
 {
-    [SerializeField] 
+    [Inject] 
     private InventoryView _view;
 
-    [SerializeField]
+    [Inject]
     private InventorySO _data;
 
     [SerializeField]
