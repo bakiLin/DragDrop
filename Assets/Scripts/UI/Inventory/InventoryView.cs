@@ -108,6 +108,11 @@ public class InventoryView : MonoBehaviour
         _tooltip.SetTooltipData(description, (ItemList[index] as IItemController).Position);
     }
 
+    public void ResetTooltip()
+    {
+        _tooltip.ResetTooltipData();
+    }
+
     public void DeselectAllItems()
     {
         ItemList.ForEach(item => item.ToggleItem(false));
