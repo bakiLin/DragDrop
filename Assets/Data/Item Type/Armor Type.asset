@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Armor Type
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Armor
-  <BackgroundSprite>k__BackingField: {fileID: 21300000, guid: 8599c5b872000af449295ad9d789a75c, type: 3}
+  <EquipmentSprite>k__BackingField: {fileID: 21300000, guid: 8599c5b872000af449295ad9d789a75c, type: 3}
   <IsEquippable>k__BackingField: 1
   <Items>k__BackingField:
   - {fileID: 11400000, guid: 5cae8b0af33d0cd4f836ce3b4f04ac2c, type: 2}
