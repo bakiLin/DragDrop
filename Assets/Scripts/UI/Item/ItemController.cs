@@ -10,7 +10,6 @@ public class ItemController : MonoBehaviour, IItemController, IItemView, IBeginD
 
     public Vector2 Position => _rectTransform.position;
 
-    [SerializeField]
     private ItemView _itemView;
 
     private bool _isEmpty = true;
@@ -19,6 +18,7 @@ public class ItemController : MonoBehaviour, IItemController, IItemView, IBeginD
 
     private void Awake()
     {
+        _itemView = GetComponent<ItemView>();
         _rectTransform = GetComponent<RectTransform>();
     }
 

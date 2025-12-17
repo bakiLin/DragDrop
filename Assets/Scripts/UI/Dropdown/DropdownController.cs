@@ -1,9 +1,10 @@
 using System.Linq;
 using UnityEngine;
+using VContainer;
 
 public class DropdownController : MonoBehaviour
 {
-    [SerializeField]
+    [Inject]
     private InventorySO _inventoryData;
 
     private DropdownView _view;

@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using VContainer;
 
 public class InventoryController : MonoBehaviour
 {
-    [SerializeField] 
+    [Inject] 
     private InventoryView _view;
 
-    [SerializeField]
+    [Inject]
     private InventorySO _data;
 
     [SerializeField]
@@ -66,6 +67,10 @@ public class InventoryController : MonoBehaviour
     private void HandleSwapItems(int i1, int i2)
     {
         _data.SwapItems(i1, i2);
+
+        InventoryItemData inventoryItem = _data.GetItemAt(i2);
+        if (inventoryItem.IsEmpty) return;
+        _view.UpdateTooltip(i2, inventoryItem.Item.Description);
     }
 
     private void HandleClicking(int index)
@@ -83,7 +88,12 @@ public class InventoryController : MonoBehaviour
         if (inventoryItem.IsEmpty) return;
 
         ItemSO item = inventoryItem.Item;
-        if (item != null) item.Interact(_data, index);
+        if (item != null)
+        {
+            _view.ResetTooltip();
+            item.Interact(_data, index);
+            HandleDescriptionRequested(index);
+        }
     }
 
     private void HandleItemDropping(int index)

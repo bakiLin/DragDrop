@@ -937,8 +937,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28b3ce67332b169499daa984fabecdbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventoryData: {fileID: 11400000, guid: 3534fd7a0574ba3498e8c0f4d0be68c0, type: 2}
-  _presenter: {fileID: 530199327}
 --- !u!114 &530199327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1223,8 +1221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d72b9bd24035149bdac529207488b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _view: {fileID: 1556766279}
-  _data: {fileID: 11400000, guid: 3534fd7a0574ba3498e8c0f4d0be68c0, type: 2}
   _doubleClickTime: 0.4
 --- !u!1 &796594296
 GameObject:
@@ -1671,6 +1667,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1171879332
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1171879333}
+  - component: {fileID: 1171879334}
+  m_Layer: 0
+  m_Name: Scope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1171879333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171879332}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1884112810}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1171879334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171879332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 816f9cecdccf5c64d8b67d650df516cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: 
+  autoRun: 1
+  autoInjectGameObjects:
+  - {fileID: 733245863}
+  - {fileID: 530199324}
+  - {fileID: 1556766277}
+  _inventoryData: {fileID: 11400000, guid: 3534fd7a0574ba3498e8c0f4d0be68c0, type: 2}
+  _inventoryView: {fileID: 1556766279}
+  _itemPrefab: {fileID: 2893784264177240206, guid: 8e932ad1cbd23d048b3ded940862c159, type: 3}
+  _tooltip: {fileID: 2012495821}
+  _pointerFollower: {fileID: 1369994424}
+  _itemDropView: {fileID: 667832330}
 --- !u!1 &1189073149
 GameObject:
   m_ObjectHideFlags: 0
@@ -2395,10 +2448,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9565c65cb408c404ebdd8335790f4192, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemPrefab: {fileID: 2893784264177240206, guid: 8e932ad1cbd23d048b3ded940862c159, type: 3}
-  _tooltip: {fileID: 2012495821}
-  _pointerFollower: {fileID: 1369994424}
-  _itemDropView: {fileID: 667832330}
   _contentPanel: {fileID: 1626834555}
   _dropItemButton: {fileID: 1248246384}
   _confirmDropButton: {fileID: 1323205942}
@@ -3265,6 +3314,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1171879333}
   - {fileID: 733245864}
   - {fileID: 530199325}
   m_Father: {fileID: 0}
