@@ -6,13 +6,13 @@ public class DropdownController : MonoBehaviour
     [SerializeField]
     private InventorySO _inventoryData;
 
-    [SerializeField]
     private DropdownView _view;
 
     private ItemTypeSO[] _itemTypes => _inventoryData.ItemTypes;
 
     private void Start()
     {
+        _view = GetComponent<DropdownView>();
         _view.Init(_itemTypes.Select(x => x.Name).ToArray());
         _view.OnValueChanged += FillItemDropDown;
         _view.OnButtonClicked += CreateDropdownItem;
